@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
 #[ORM\Entity(repositoryClass: CommandLogRepository::class)]
-#[ORM\Table(name: 'fabric_syncs')]
+#[ORM\Table(name: 'command_scheduler_logs')]
 class CommandLog
 {
     #[ORM\Id]

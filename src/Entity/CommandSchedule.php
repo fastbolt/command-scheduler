@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
-#[ORM\Table(name: 'fabric_syncs')]
+#[ORM\Table(name: 'command_scheduler_schedules')]
 class CommandSchedule
 {
     #[ORM\Id]
