@@ -26,7 +26,7 @@ class CommandLog
 
     #[ORM\Column(length: 255, nullable: true)]
     #[ORM\ManyToOne(targetEntity: CommandSchedule::class, inversedBy: 'logs')]
-    private ?CommandSchedule $commandSchedule = null;
+    private ?CommandSchedule $commandSchedule;
 
     #[ORM\Column]
     private DateTimeImmutable $startedAt;
@@ -37,7 +37,7 @@ class CommandLog
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
 
-    public function __construct(string $command, ?CommandSchedule $commandSchedule)
+    public function __construct(string $command, ?CommandSchedule $commandSchedule = null)
     {
         $this->command         = $command;
         $this->commandSchedule = $commandSchedule;
