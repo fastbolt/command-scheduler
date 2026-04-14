@@ -39,6 +39,8 @@ class ScheduleCommandsCommand extends Command
             $this->commandSchedulerLogPersister->createLog($command);
         }
 
+        $output->writeln(sprintf('<info>Scheduled %d command(s) for execution.</info>', count($commands)));
+
         return Command::SUCCESS;
     }
 }

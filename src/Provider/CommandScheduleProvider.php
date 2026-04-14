@@ -11,6 +11,7 @@ class CommandScheduleProvider
 {
     public function __construct(
         private readonly CommandScheduleRepository $commandScheduleRepository,
+        private readonly CommandLogProvider $commandLogProvider,
     ) {
     }
 
@@ -19,15 +20,24 @@ class CommandScheduleProvider
      */
     public function getDueCommands(): iterable
     {
-        $enabledSchedules = $this->commandScheduleRepository->findEnabledSchedules();
-        $dueSchedules     = [];
+        $alreadyScheduledCommands = $this->commandLogProvider->getScheduledCommandIdentifiers();
+        $enabledSchedules         = $this->commandScheduleRepository->findEnabledSchedules();
+        $dueSchedules             = [];
 
         foreach ($enabledSchedules as $schedule) {
+            // Check if not-started schedule already exists
+            $identifier = $schedule->getIdentifier();
+            if (isset($alreadyScheduledCommands[$identifier])) {
+                continue;
+            }
+
+            // Validate cron expression syntactically
             $expression = $schedule->getCronExpression();
             if (!CronExpression::isValidExpression($expression)) {
                 throw new InvalidExpressionException($schedule);
             }
 
+            // Check if cron expression is due
             $cronExpression = new CronExpression($expression);
             if (!$cronExpression->isDue()) {
                 continue;
@@ -41,6 +51,5 @@ class CommandScheduleProvider
 
     public function getScheduledExecutions()
     {
-
     }
 }

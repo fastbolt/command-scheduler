@@ -16,6 +16,7 @@ services:
 
     Fastbolt\CommandScheduler\Provider\CommandScheduleProvider:
         $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
+        $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
 
     Fastbolt\CommandScheduler\Repository\CommandScheduleRepository:
         $registry: '@doctrine'

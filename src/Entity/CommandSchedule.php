@@ -47,15 +47,20 @@ class CommandSchedule
     #[ORM\OneToMany(targetEntity: CommandLog::class, mappedBy: 'commandSchedule')]
     private iterable $logs;
 
-    public function __construct(string $command, string $cronExpression, int $priority, string $arguments = '', bool $enabled = true)
-    {
-        $this->command        = $command;
+    public function __construct(
+        string $command,
+        string $cronExpression,
+        int $priority,
+        string $arguments = '',
+        bool $enabled = true
+    ) {
+        $this->command = $command;
         $this->cronExpression = $cronExpression;
-        $this->priority        = $priority;
-        $this->arguments      = $arguments;
-        $this->enabled        = $enabled;
-        $this->logs           = new ArrayCollection();
-        $this->createdAt      = new DateTimeImmutable();
+        $this->priority = $priority;
+        $this->arguments = $arguments;
+        $this->enabled = $enabled;
+        $this->logs = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -152,5 +157,10 @@ class CommandSchedule
     public function getPriority(): int
     {
         return $this->priority;
+    }
+
+    public function getIdentifier(): string
+    {
+        return md5($this->command . $this->arguments);
     }
 }
