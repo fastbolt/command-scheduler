@@ -13,11 +13,26 @@ class CommandLogProvider
     }
 
     /**
+     * Method for getting a list of all currently scheduled commands.
+     * "Scheduled" are all commandLog entries where startedAt IS NULL, ordered by priority ascending.
+     *
      * @return iterable<CommandLog>
      */
     public function getScheduledCommands(): iterable
     {
         return $this->commandLogRepository->findScheduledCommands();
+    }
+
+    /**
+     * Method for getting a list of all currently running commands.
+     * "Running" are all commandLog entries where startedAt IS NOT NULL and finishedAt is null, ordered by startedAt
+     * ascending.
+     *
+     * @return iterable<CommandLog>
+     */
+    public function getRunningCommands(): iterable
+    {
+        return $this->commandLogRepository->findRunningCommands();
     }
 
     public function getScheduledCommandIdentifiers(): array
