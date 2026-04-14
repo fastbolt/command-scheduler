@@ -24,4 +24,12 @@ class CommandScheduleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CommandSchedule::class);
     }
+
+    /**
+     * @return iterable<CommandSchedule>
+     */
+    public function findEnabledSchedules(): iterable
+    {
+        return $this->findBy(['enabled' => true]);
+    }
 }

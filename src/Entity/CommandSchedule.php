@@ -15,6 +15,7 @@ use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
 #[ORM\Table(name: 'command_scheduler_schedules')]
+#[ORM\UniqueConstraint(name: 'unique_command_arguments', columns: ['command', 'arguments'])]
 class CommandSchedule
 {
     #[ORM\Id]
@@ -22,7 +23,7 @@ class CommandSchedule
     #[ORM\Column]
     private int $id = 0;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     private string $command;
 
     #[ORM\Column(length: 255)]

@@ -1,1 +1,25 @@
 services:
+    Fastbolt\CommandScheduler\Command\ExecuteCommandsCommand:
+        tags: [ 'console.command' ]
+        arguments:
+            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
+            $commandScheduleExecutor: '@Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor'
+
+    Fastbolt\CommandScheduler\Provider\CommandScheduleProvider:
+        $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
+
+    Fastbolt\CommandScheduler\Repository\CommandScheduleRepository:
+        $registry: '@doctrine'
+
+    Fastbolt\CommandScheduler\Repository\CommandLogRepository:
+        $registry: '@doctrine'
+
+    Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor:
+        $lockRegistry: '@Fastbolt\CommandScheduler\Lock\LockRegistry'
+        $persister: '@Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister'
+
+    Fastbolt\CommandScheduler\Lock\LockRegistry:
+        $lockFactory: '@Symfony\Component\Lock\LockFactory'
+
+    Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister:
+        $entityManager: '@doctrine.orm.entity_manager'

@@ -21,18 +21,17 @@ class CommandLog
     #[ORM\Column]
     private int $id = 0;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     private string $command;
 
-    #[ORM\Column(length: 255, nullable: true)]
     #[ORM\ManyToOne(targetEntity: CommandSchedule::class, inversedBy: 'logs')]
     private ?CommandSchedule $commandSchedule;
 
     #[ORM\Column]
     private DateTimeImmutable $startedAt;
 
-    #[ORM\Column]
-    private DateTimeImmutable $finishedAt;
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $finishedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
@@ -79,7 +78,7 @@ class CommandLog
     /**
      * @return DateTimeImmutable
      */
-    public function getFinishedAt(): DateTimeImmutable
+    public function getFinishedAt(): ?DateTimeImmutable
     {
         return $this->finishedAt;
     }
