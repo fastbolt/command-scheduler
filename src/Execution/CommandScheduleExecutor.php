@@ -5,11 +5,9 @@ namespace Fastbolt\CommandScheduler\Execution;
 use Exception;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Lock\LockRegistry;
-use Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister;
+use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CommandScheduleExecutor
@@ -18,7 +16,7 @@ class CommandScheduleExecutor
 
     public function __construct(
         private readonly LockRegistry $lockRegistry,
-        private readonly CommandSchedulerLogPersister $persister
+        private readonly CommandLogPersister $persister
     ) {
     }
 
@@ -45,7 +43,14 @@ class CommandScheduleExecutor
         } catch (Exception $exception) {
             $result = CommandLog::COMMAND_RETURN_EXCEPTION;
 
-            $output->error(sprintf('Exception while executing command "%s": %s', $commandLog->getCommand(), $exception->getMessage()));
+            $output->error(
+                sprintf(
+                    'Exception "%s" while executing command "%s": %s',
+                    get_class($exception),
+                    $commandLog->getCommand(),
+                    $exception->getMessage()
+                )
+            );
         } finally {
             // Update log entry if exists
             $this->persister->finishLog($commandLog, $result);

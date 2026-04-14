@@ -9,7 +9,7 @@ services:
         tags: [ 'console.command' ]
         arguments:
             $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
-            $commandSchedulerLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
 
     Fastbolt\CommandScheduler\Provider\CommandLogProvider:
         $commandLogRepository: '@Fastbolt\CommandScheduler\Repository\CommandLogRepository'
@@ -26,10 +26,19 @@ services:
 
     Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor:
         $lockRegistry: '@Fastbolt\CommandScheduler\Lock\LockRegistry'
-        $persister: '@Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister'
+        $persister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
 
     Fastbolt\CommandScheduler\Lock\LockRegistry:
         $lockFactory: '@Symfony\Component\Lock\LockFactory'
 
-    Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister:
+    Fastbolt\CommandScheduler\Persistence\CommandLogPersister:
         $entityManager: '@doctrine.orm.entity_manager'
+
+    Fastbolt\CommandScheduler\EventSubscriber\CommandEventSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+
+    Fastbolt\CommandScheduler\Persistence\CommandLogRegistry:
+

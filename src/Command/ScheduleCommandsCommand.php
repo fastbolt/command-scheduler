@@ -2,7 +2,7 @@
 
 namespace Fastbolt\CommandScheduler\Command;
 
-use Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister;
+use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +18,7 @@ class ScheduleCommandsCommand extends Command
 {
     public function __construct(
         private readonly CommandScheduleProvider $commandScheduleProvider,
-        private readonly CommandSchedulerLogPersister $commandSchedulerLogPersister,
+        private readonly CommandLogPersister $commandLogPersister,
     ) {
         parent::__construct();
     }
@@ -37,7 +37,7 @@ class ScheduleCommandsCommand extends Command
 
         // create log entries for all commands to be executed
         foreach ($commands as $command) {
-            $this->commandSchedulerLogPersister->createLog($command);
+            $this->commandLogPersister->createScheduleLog($command);
         }
 
         $io->info(sprintf('Scheduled %d command(s) for execution.', count($commands)));

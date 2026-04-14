@@ -7,19 +7,33 @@ use Doctrine\ORM\EntityManagerInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 
-class CommandSchedulerLogPersister
+class CommandLogPersister
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function createLog(CommandSchedule $schedule): CommandLog
+    public function createScheduleLog(CommandSchedule $schedule): CommandLog
     {
         $log = new CommandLog(
             $schedule->getCommand(),
             $schedule,
         );
+        $this->entityManager->persist($log);
+        $this->entityManager->flush();
+
+        return $log;
+    }
+
+    public function createLog(string $command): CommandLog
+    {
+        $log = new CommandLog(
+            $command,
+            null,
+        );
+        $log->setStartedAt(new DateTimeImmutable());
+
         $this->entityManager->persist($log);
         $this->entityManager->flush();
 
@@ -35,7 +49,7 @@ class CommandSchedulerLogPersister
         $this->entityManager->flush();
     }
 
-    public function startLog(CommandLog $log):void
+    public function startLog(CommandLog $log): void
     {
         $log->setStartedAt(new DateTimeImmutable());
 
