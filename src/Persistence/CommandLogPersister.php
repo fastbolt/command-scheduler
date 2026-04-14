@@ -6,11 +6,13 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
+use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 class CommandLogPersister
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly CommandScheduleRepository $commandScheduleRepository
     ) {
     }
 
@@ -28,9 +30,10 @@ class CommandLogPersister
 
     public function createLog(string $command): CommandLog
     {
-        $log = new CommandLog(
+        $schedule = $this->getScheduleForCommand($command);
+        $log      = new CommandLog(
             $command,
-            null,
+            $schedule,
         );
         $log->setStartedAt(new DateTimeImmutable());
 
@@ -55,5 +58,15 @@ class CommandLogPersister
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();
+    }
+
+    private function getScheduleForCommand(string $command): ?CommandSchedule
+    {
+        $items = $this->commandScheduleRepository->findBy(['command' => $command]);
+        if (!$items || count($items) > 1) {
+            return null;
+        }
+
+        return $items[0];
     }
 }

@@ -33,6 +33,7 @@ services:
 
     Fastbolt\CommandScheduler\Persistence\CommandLogPersister:
         $entityManager: '@doctrine.orm.entity_manager'
+        $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
 
     Fastbolt\CommandScheduler\EventSubscriber\CommandEventSubscriber:
         tags: [ 'kernel.event_subscriber' ]
