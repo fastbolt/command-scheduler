@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'command-scheduler:execute',
@@ -30,6 +31,8 @@ class ExecuteCommandsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
         // I did not find any way to inject Application object using DIC, so dirty we go...
         $this->commandScheduleExecutor->setApplication($this->getApplication());
 
@@ -38,7 +41,7 @@ class ExecuteCommandsCommand extends Command
 
         // execute one by one
         foreach ($commands as $command) {
-            $this->commandScheduleExecutor->execute($command, $output);
+            $this->commandScheduleExecutor->execute($command, $io);
         }
 
         return Command::SUCCESS;
