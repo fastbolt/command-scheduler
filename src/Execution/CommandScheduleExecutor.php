@@ -3,13 +3,12 @@
 namespace Fastbolt\CommandScheduler\Execution;
 
 use Exception;
-use Fastbolt\CommandScheduler\Entity\CommandSchedule;
+use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Lock\LockRegistry;
 use Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
-use DateTimeImmutable;
 
 class CommandScheduleExecutor
 {
@@ -21,25 +20,43 @@ class CommandScheduleExecutor
     ) {
     }
 
-    public function execute(CommandSchedule $commandSchedule, OutputInterface $output): ?int
+    public function execute(CommandLog $commandLog, OutputInterface $output): ?int
     {
-        $log    = null;
-        $result = null;
+        $exception = null;
+        $lock      = null;
+        $command   = $commandLog->getCommandSchedule();
+
         try {
-            $this->lockRegistry->getLock($commandName = $commandSchedule->getCommand());
-            $log = $this->persister->persistSchedule($commandSchedule);
+            $lock = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
 
-            $executable   = $this->application->find($commandSchedule->getCommand());
-            $commandInput = new StringInput($commandSchedule->getArguments());
+            // set started
+            $this->persister->startLog($commandLog);
 
+            // find executable from application stack
+            $executable = $this->application->find($commandLog->getCommand());
+
+            // create command line input
+            $commandInput = new StringInput($command?->getArguments() ?: '');
+
+            // run executable
             $result = $executable->run($commandInput, $output);
-            $log->setReturnCode($result);
-            $log->setFinishedAt(new DateTimeImmutable());
-
-            $this->lockRegistry->releaseLock($commandName);
         } catch (Exception $exception) {
-            throw $exception;
+            $result = CommandLog::COMMAND_RETURN_EXCEPTION;
+
+            $output->writeln(sprintf('<error>Exception while executing command "%s": %s</error>', $commandLog->getCommand(), $exception->getMessage()));
         } finally {
+            // Update log entry if exists
+            $this->persister->finishLog($commandLog, $result);
+
+            // release lock present
+            if (null !== $lock) {
+                $this->lockRegistry->releaseLock($commandName);
+            }
+        }
+
+        // throw previously caught exception
+        if ($exception) {
+//            throw $exception;
         }
 
         return $result;

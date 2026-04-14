@@ -16,6 +16,8 @@ use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 #[ORM\Table(name: 'command_scheduler_logs')]
 class CommandLog
 {
+    public const COMMAND_RETURN_EXCEPTION = -1;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,7 +30,10 @@ class CommandLog
     private ?CommandSchedule $commandSchedule;
 
     #[ORM\Column]
-    private DateTimeImmutable $startedAt;
+    private ?DateTimeImmutable $createdAt;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $startedAt;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $finishedAt = null;
@@ -40,7 +45,7 @@ class CommandLog
     {
         $this->command         = $command;
         $this->commandSchedule = $commandSchedule;
-        $this->startedAt       = new DateTimeImmutable();
+        $this->createdAt       = new DateTimeImmutable();
     }
 
     /**
@@ -92,6 +97,14 @@ class CommandLog
     }
 
     /**
+     * @param DateTimeImmutable $startedAt
+     */
+    public function setStartedAt(DateTimeImmutable $startedAt): void
+    {
+        $this->startedAt = $startedAt;
+    }
+
+    /**
      * @param DateTimeImmutable $finishedAt
      */
     public function setFinishedAt(DateTimeImmutable $finishedAt): void
@@ -105,5 +118,13 @@ class CommandLog
     public function setReturnCode(?int $returnCode): void
     {
         $this->returnCode = $returnCode;
+    }
+
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 }

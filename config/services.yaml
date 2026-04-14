@@ -2,8 +2,17 @@ services:
     Fastbolt\CommandScheduler\Command\ExecuteCommandsCommand:
         tags: [ 'console.command' ]
         arguments:
-            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
+            $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
             $commandScheduleExecutor: '@Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor'
+
+    Fastbolt\CommandScheduler\Command\ScheduleCommandsCommand:
+        tags: [ 'console.command' ]
+        arguments:
+            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
+            $commandSchedulerLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandSchedulerLogPersister'
+
+    Fastbolt\CommandScheduler\Provider\CommandLogProvider:
+        $commandLogRepository: '@Fastbolt\CommandScheduler\Repository\CommandLogRepository'
 
     Fastbolt\CommandScheduler\Provider\CommandScheduleProvider:
         $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'

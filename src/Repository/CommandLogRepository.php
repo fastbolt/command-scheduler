@@ -24,4 +24,18 @@ class CommandLogRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CommandLog::class);
     }
+
+    /**
+     * @return iterable<CommandLog>
+     */
+    public function findScheduledCommands(): iterable
+    {
+        return $this->createQueryBuilder('cl')
+                    ->leftJoin('cl.commandSchedule', 'c')
+                    ->where('cl.startedAt IS NULL')
+                    ->orderBy('c.priority', 'ASC')
+                    ->addOrderBy('cl.command', 'ASC')
+                    ->getQuery()
+                    ->getResult();
+    }
 }
