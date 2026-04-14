@@ -4,6 +4,7 @@ namespace Fastbolt\CommandScheduler\Provider;
 
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
+use Symfony\Component\Console\Command\Command;
 
 class CommandLogProvider
 {
@@ -35,6 +36,23 @@ class CommandLogProvider
         return $this->commandLogRepository->findRunningCommands();
     }
 
+    /**
+     * @return iterable<CommandLog>
+     */
+    public function getErrors(): iterable
+    {
+        return $this->commandLogRepository->findErrorCommands();
+    }
+
+    public function hasLastExecutionFailed(string $command): bool
+    {
+        if (null === ($lastExecution = $this->commandLogRepository->getLastExecution($command))) {
+            return false;
+        }
+
+        return $lastExecution->getReturnCode() !== Command::SUCCESS;
+    }
+
     public function getScheduledCommandIdentifiers(): array
     {
         $result = array_filter(
@@ -47,5 +65,10 @@ class CommandLogProvider
         );
 
         return array_combine($result, $result);
+    }
+
+    public function getLastSuccess(string $command): ?CommandLog
+    {
+        return $this->commandLogRepository->getLastSuccess($command);
     }
 }
