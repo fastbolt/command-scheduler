@@ -14,7 +14,7 @@ use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
 #[ORM\Entity(repositoryClass: CommandLogRepository::class)]
 #[ORM\Table(name: 'command_scheduler_logs')]
-final class CommandLog
+class CommandLog
 {
     public const COMMAND_RETURN_EXCEPTION = -1;
 
