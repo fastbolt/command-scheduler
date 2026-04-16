@@ -19,6 +19,14 @@
         </ignoreFiles>
     </projectFiles>
 
+    <issueHandlers>
+        <ClassMustBeFinal>
+            <errorLevel type="suppress">
+                <directory name="src/Entity/"/>
+            </errorLevel>
+        </ClassMustBeFinal>
+    </issueHandlers>
+
     <fileExtensions>
         <extension name=".php"/>
     </fileExtensions>

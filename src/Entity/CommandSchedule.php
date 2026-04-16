@@ -16,7 +16,7 @@ use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
 #[ORM\Table(name: 'command_scheduler_schedules')]
 #[ORM\UniqueConstraint(name: 'unique_command_arguments', columns: ['command', 'arguments'])]
-final class CommandSchedule
+class CommandSchedule
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
