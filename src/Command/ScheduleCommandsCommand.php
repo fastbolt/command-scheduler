@@ -10,6 +10,7 @@ namespace Fastbolt\CommandScheduler\Command;
 
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,6 +37,7 @@ final class ScheduleCommandsCommand extends Command
     /**
      * @return void
      */
+    #[Override]
     protected function configure(): void
     {
         parent::configure();
@@ -47,6 +49,7 @@ final class ScheduleCommandsCommand extends Command
      *
      * @return int
      */
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

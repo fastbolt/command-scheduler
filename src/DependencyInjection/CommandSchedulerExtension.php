@@ -8,6 +8,7 @@
 
 namespace Fastbolt\CommandScheduler\DependencyInjection;
 
+use Override;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -16,24 +17,20 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 final class CommandSchedulerExtension extends Extension
 {
     /**
-     * @param array<string, mixed> $configs
-     * @param ContainerBuilder     $container
+     * Loads a specific configuration.
+     *
+     * @param array<array<mixed>> $configs
      *
      * @return void
-     * @throws \Exception
+     *
+     * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
+    #[Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         // load configuration
-        $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
-        $locator       = new FileLocator(__DIR__ . '/../../config/');
-        $loader        = new YamlFileLoader($container, $locator);
-
-        foreach ($config as $key => $value) {
-            $container->setParameter('command_scheduler.' . $key, $value);
-        }
-
+        $locator = new FileLocator(__DIR__ . '/../../config/');
+        $loader  = new YamlFileLoader($container, $locator);
         $loader->load('services.yaml');
     }
 }

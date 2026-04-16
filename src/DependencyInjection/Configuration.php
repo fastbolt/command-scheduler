@@ -8,6 +8,7 @@
 
 namespace Fastbolt\CommandScheduler\DependencyInjection;
 
+use Override;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,6 +21,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * @return TreeBuilder
      */
+    #[Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('command_scheduler');

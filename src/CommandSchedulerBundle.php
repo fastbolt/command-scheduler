@@ -9,6 +9,7 @@
 namespace Fastbolt\CommandScheduler;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Override;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -19,6 +20,7 @@ final class CommandSchedulerBundle extends Bundle
      *
      * @return void
      */
+    #[Override]
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(

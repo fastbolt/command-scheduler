@@ -30,10 +30,10 @@ final class CommandLog
     private ?CommandSchedule $commandSchedule;
 
     #[ORM\Column]
-    private ?DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $startedAt;
+    private ?DateTimeImmutable $startedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $finishedAt = null;

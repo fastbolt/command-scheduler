@@ -4,6 +4,7 @@ namespace Fastbolt\CommandScheduler\EventSubscriber;
 
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Fastbolt\CommandScheduler\Persistence\CommandLogRegistry;
+use Override;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,8 +22,9 @@ final class CommandEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return string[]
+     * @return array<class-string, string>
      */
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [
