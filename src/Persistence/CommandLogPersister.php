@@ -80,12 +80,12 @@ final class CommandLogPersister
 
     /**
      * @param CommandLog $log
-     * @param int        $result
+     * @param int|null   $result
      *
      * @return void
      */
 
-    public function finishLog(CommandLog $log, int $result): void
+    public function finishLog(CommandLog $log, ?int $result): void
     {
         $log->setFinishedAt(new DateTimeImmutable());
         $log->setReturnCode($result);

@@ -19,15 +19,16 @@
         }
     ],
     "require" : {
-        "php" : ">=8.2",
-        "doctrine/doctrine-bundle" : "^2.6",
-        "doctrine/orm" : "^2.12|^3.2",
-        "doctrine/persistence" : "^2.4|^3.0",
-        "dragonmantank/cron-expression" : "^3.6",
-        "symfony/config" : "^6.4",
-        "symfony/console" : "^6.4",
-        "symfony/framework-bundle" : "^6.4",
-        "symfony/lock" : "^6.4"
+        "php": ">=8.2",
+        "doctrine/doctrine-bundle": "^2.6",
+        "doctrine/orm": "^2.12|^3.2",
+        "doctrine/persistence": "^2.4|^3.0",
+        "dragonmantank/cron-expression": "^3.6",
+        "symfony/config": "^6.4",
+        "symfony/console": "^6.4",
+        "symfony/framework-bundle": "^6.4",
+        "symfony/lock": "^6.4",
+        "symfony/polyfill-php83": "^1.36"
     },
     "require-dev" : {
         "fig-r/psr2r-sniffer" : "^1.3",

@@ -38,12 +38,18 @@ final class CommandEventSubscriber implements EventSubscriberInterface
      */
     public function onConsoleCommand(ConsoleCommandEvent $event): void
     {
-        if (null === ($command = $event->getCommand()->getName())) {
+        // fail silently
+        if (null === ($command = $event->getCommand())) {
             return;
         }
 
-        $log = $this->commandLogPersister->createLog($command);
-        $this->commandLogRegistry->registerItem(spl_object_hash($event->getCommand()), $log);
+        // fail silently
+        if (null === ($commandName = $command->getName())) {
+            return;
+        }
+
+        $log = $this->commandLogPersister->createLog($commandName);
+        $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
     }
 
     /**
@@ -53,7 +59,15 @@ final class CommandEventSubscriber implements EventSubscriberInterface
      */
     public function onConsoleTerminate(ConsoleTerminateEvent $event): void
     {
-        $log = $this->commandLogRegistry->getItem(spl_object_hash($event->getCommand()));
+        // fail silently
+        if (null === ($command = $event->getCommand())) {
+            return;
+        }
+
+        // fail silently
+        if (null === ($log = $this->commandLogRegistry->getItem(spl_object_hash($command)))) {
+            return;
+        }
         $this->commandLogPersister->finishLog($log, $event->getExitCode());
     }
 }

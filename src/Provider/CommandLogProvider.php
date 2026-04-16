@@ -73,7 +73,7 @@ class CommandLogProvider
                             return null;
                         }
 
-                        return $commandLog->getCommandSchedule()?->getIdentifier();
+                        return $commandLog->getCommandSchedule()->getIdentifier();
                     },
                     $this->getScheduledCommands()
                 )

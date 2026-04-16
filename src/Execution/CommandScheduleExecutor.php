@@ -6,6 +6,7 @@ use Exception;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Lock\LockRegistry;
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
+use RuntimeException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -32,11 +33,15 @@ final class CommandScheduleExecutor
      */
     public function execute(CommandLog $commandLog, SymfonyStyle $output): ?int
     {
+        if (null === ($application = $this->application)) {
+            throw new RuntimeException('Application object not set. Please set it before executing commands.');
+        }
+
         $exception   = null;
         $lock        = null;
         $command     = $commandLog->getCommandSchedule();
         $commandName = null;
-        $result=null;
+        $result      = null;
 
         try {
             $lock = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
@@ -45,7 +50,7 @@ final class CommandScheduleExecutor
             $this->persister->startLog($commandLog);
 
             // find executable from application stack
-            $executable = $this->application->find($commandLog->getCommand());
+            $executable = $application->find($commandLog->getCommand());
 
             $arguments = $command ? $command->getArguments() : '';
 
