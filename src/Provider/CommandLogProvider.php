@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Provider;
 
 use DateTimeInterface;
@@ -9,20 +15,12 @@ use Symfony\Component\Console\Command\Command;
 
 class CommandLogProvider
 {
+    /**
+     * @param CommandLogRepository $commandLogRepository
+     */
     public function __construct(
         private readonly CommandLogRepository $commandLogRepository,
     ) {
-    }
-
-    /**
-     * Method for getting a list of all currently scheduled commands.
-     * "Scheduled" are all commandLog entries where startedAt IS NULL, ordered by priority ascending.
-     *
-     * @return iterable<CommandLog>
-     */
-    public function getScheduledCommands(): iterable
-    {
-        return $this->commandLogRepository->findScheduledCommands();
     }
 
     /**
@@ -74,6 +72,17 @@ class CommandLogProvider
         );
 
         return array_combine($result, $result);
+    }
+
+    /**
+     * Method for getting a list of all currently scheduled commands.
+     * "Scheduled" are all commandLog entries where startedAt IS NULL, ordered by priority ascending.
+     *
+     * @return iterable<CommandLog>
+     */
+    public function getScheduledCommands(): iterable
+    {
+        return $this->commandLogRepository->findScheduledCommands();
     }
 
     /**

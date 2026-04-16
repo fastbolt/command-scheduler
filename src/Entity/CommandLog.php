@@ -41,6 +41,10 @@ class CommandLog
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
 
+    /**
+     * @param string               $command
+     * @param CommandSchedule|null $commandSchedule
+     */
     public function __construct(string $command, ?CommandSchedule $commandSchedule = null)
     {
         $this->command         = $command;
@@ -81,22 +85,6 @@ class CommandLog
     }
 
     /**
-     * @return DateTimeImmutable
-     */
-    public function getFinishedAt(): ?DateTimeImmutable
-    {
-        return $this->finishedAt;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getReturnCode(): ?int
-    {
-        return $this->returnCode;
-    }
-
-    /**
      * @param DateTimeImmutable $startedAt
      */
     public function setStartedAt(DateTimeImmutable $startedAt): void
@@ -105,11 +93,27 @@ class CommandLog
     }
 
     /**
+     * @return DateTimeImmutable
+     */
+    public function getFinishedAt(): ?DateTimeImmutable
+    {
+        return $this->finishedAt;
+    }
+
+    /**
      * @param DateTimeImmutable $finishedAt
      */
     public function setFinishedAt(DateTimeImmutable $finishedAt): void
     {
         $this->finishedAt = $finishedAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getReturnCode(): ?int
+    {
+        return $this->returnCode;
     }
 
     /**

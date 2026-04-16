@@ -5,7 +5,7 @@
 >
     <files>
         <projectFiles>
-            <directory name="src" />
+            <directory name="src"/>
         </projectFiles>
     </files>
 </psalm>

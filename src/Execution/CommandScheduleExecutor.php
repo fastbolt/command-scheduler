@@ -14,12 +14,22 @@ class CommandScheduleExecutor
 {
     private ?Application $application = null;
 
+    /**
+     * @param LockRegistry        $lockRegistry
+     * @param CommandLogPersister $persister
+     */
     public function __construct(
         private readonly LockRegistry $lockRegistry,
         private readonly CommandLogPersister $persister
     ) {
     }
 
+    /**
+     * @param CommandLog   $commandLog
+     * @param SymfonyStyle $output
+     *
+     * @return int|null
+     */
     public function execute(CommandLog $commandLog, SymfonyStyle $output): ?int
     {
         $exception = null;
@@ -69,6 +79,11 @@ class CommandScheduleExecutor
         return $result;
     }
 
+    /**
+     * @param Application|null $application
+     *
+     * @return $this
+     */
     public function setApplication(?Application $application): CommandScheduleExecutor
     {
         $this->application = $application;

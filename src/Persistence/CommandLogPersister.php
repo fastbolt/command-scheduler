@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Persistence;
 
 use DateTimeImmutable;
@@ -10,12 +16,21 @@ use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 class CommandLogPersister
 {
+    /**
+     * @param EntityManagerInterface    $entityManager
+     * @param CommandScheduleRepository $commandScheduleRepository
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly CommandScheduleRepository $commandScheduleRepository
     ) {
     }
 
+    /**
+     * @param CommandSchedule $schedule
+     *
+     * @return CommandLog
+     */
     public function createScheduleLog(CommandSchedule $schedule): CommandLog
     {
         $log = new CommandLog(
@@ -28,6 +43,11 @@ class CommandLogPersister
         return $log;
     }
 
+    /**
+     * @param string $command
+     *
+     * @return CommandLog
+     */
     public function createLog(string $command): CommandLog
     {
         $schedule = $this->getScheduleForCommand($command);
@@ -43,6 +63,28 @@ class CommandLogPersister
         return $log;
     }
 
+    /**
+     * @param string $command
+     *
+     * @return CommandSchedule|null
+     */
+    private function getScheduleForCommand(string $command): ?CommandSchedule
+    {
+        $items = $this->commandScheduleRepository->findBy(['command' => $command]);
+        if (!$items || count($items) > 1) {
+            return null;
+        }
+
+        return $items[0];
+    }
+
+    /**
+     * @param CommandLog $log
+     * @param int        $result
+     *
+     * @return void
+     */
+
     public function finishLog(CommandLog $log, int $result): void
     {
         $log->setFinishedAt(new DateTimeImmutable());
@@ -52,21 +94,16 @@ class CommandLogPersister
         $this->entityManager->flush();
     }
 
+    /**
+     * @param CommandLog $log
+     *
+     * @return void
+     */
     public function startLog(CommandLog $log): void
     {
         $log->setStartedAt(new DateTimeImmutable());
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();
-    }
-
-    private function getScheduleForCommand(string $command): ?CommandSchedule
-    {
-        $items = $this->commandScheduleRepository->findBy(['command' => $command]);
-        if (!$items || count($items) > 1) {
-            return null;
-        }
-
-        return $items[0];
     }
 }

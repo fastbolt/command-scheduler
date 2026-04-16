@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Command;
 
 use Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor;
 use Fastbolt\CommandScheduler\Provider\CommandLogProvider;
-use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,6 +22,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ExecuteCommandsCommand extends Command
 {
+    /**
+     * @param CommandLogProvider      $commandLogProvider
+     * @param CommandScheduleExecutor $commandScheduleExecutor
+     */
     public function __construct(
         private readonly CommandLogProvider $commandLogProvider,
         private readonly CommandScheduleExecutor $commandScheduleExecutor,
@@ -24,11 +33,20 @@ class ExecuteCommandsCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @return void
+     */
     protected function configure(): void
     {
         parent::configure();
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

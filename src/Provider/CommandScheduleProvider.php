@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Provider;
 
 use Cron\CronExpression;
@@ -9,6 +15,10 @@ use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 class CommandScheduleProvider
 {
+    /**
+     * @param CommandScheduleRepository $commandScheduleRepository
+     * @param CommandLogProvider        $commandLogProvider
+     */
     public function __construct(
         private readonly CommandScheduleRepository $commandScheduleRepository,
         private readonly CommandLogProvider $commandLogProvider,

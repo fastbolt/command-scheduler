@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Lock;
 
 use Fastbolt\CommandScheduler\Exception\AcquireLockException;
@@ -12,11 +18,19 @@ class LockRegistry
 {
     private array $locks = [];
 
+    /**
+     * @param LockFactory $lockFactory
+     */
     public function __construct(
         private readonly LockFactory $lockFactory
     ) {
     }
 
+    /**
+     * @param string $name
+     *
+     * @return LockInterface
+     */
     public function getLock(string $name): LockInterface
     {
         $lockName               = $this->commandToLogName($name);
@@ -29,6 +43,21 @@ class LockRegistry
         return $lock;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    private function commandToLogName(string $name): string
+    {
+        return preg_replace('/[^a-zA-Z0-9]/', '_', $name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
     public function releaseLock(string $name): void
     {
         $lockName = $this->commandToLogName($name);
@@ -44,10 +73,5 @@ class LockRegistry
         } catch (ExceptionInterface $exception) {
             throw new UnknownLockException($lockName, $exception);
         }
-    }
-
-    private function commandToLogName(string $name): string
-    {
-        return preg_replace('/[^a-zA-Z0-9]/', '_', $name);
     }
 }

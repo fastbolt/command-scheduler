@@ -47,6 +47,13 @@ class CommandSchedule
     #[ORM\OneToMany(targetEntity: CommandLog::class, mappedBy: 'commandSchedule')]
     private iterable $logs;
 
+    /**
+     * @param string $command
+     * @param string $cronExpression
+     * @param int    $priority
+     * @param string $arguments
+     * @param bool   $enabled
+     */
     public function __construct(
         string $command,
         string $cronExpression,
@@ -54,13 +61,13 @@ class CommandSchedule
         string $arguments = '',
         bool $enabled = true
     ) {
-        $this->command = $command;
+        $this->command        = $command;
         $this->cronExpression = $cronExpression;
-        $this->priority = $priority;
-        $this->arguments = $arguments;
-        $this->enabled = $enabled;
-        $this->logs = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
+        $this->priority       = $priority;
+        $this->arguments      = $arguments;
+        $this->enabled        = $enabled;
+        $this->logs           = new ArrayCollection();
+        $this->createdAt      = new DateTimeImmutable();
     }
 
     /**
@@ -80,43 +87,19 @@ class CommandSchedule
     }
 
     /**
-     * @return string
-     */
-    public function getArguments(): string
-    {
-        return $this->arguments;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCronExpression(): string
-    {
-        return $this->cronExpression;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @return DateTimeImmutable
-     */
-    public function getCreatedAt(): DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * @param string $command
      */
     public function setCommand(string $command): void
     {
         $this->command = $command;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArguments(): string
+    {
+        return $this->arguments;
     }
 
     /**
@@ -128,6 +111,14 @@ class CommandSchedule
     }
 
     /**
+     * @return string
+     */
+    public function getCronExpression(): string
+    {
+        return $this->cronExpression;
+    }
+
+    /**
      * @param string $cronExpression
      */
     public function setCronExpression(string $cronExpression): void
@@ -136,11 +127,27 @@ class CommandSchedule
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
      * @param bool $enabled
      */
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    /**
+     * @return DateTimeImmutable
+     */
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
     /**
@@ -159,6 +166,9 @@ class CommandSchedule
         return $this->priority;
     }
 
+    /**
+     * @return string
+     */
     public function getIdentifier(): string
     {
         return md5($this->command . $this->arguments);

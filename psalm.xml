@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <psalm
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         name="PsalmPHP Code Inspection for Fastbolt Fabric Importer"
         resolveFromConfigFile="false"
         errorLevel="1"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         findUnusedBaselineEntry="true"
@@ -26,7 +26,7 @@
             </errorLevel>
         </PropertyNotSetInConstructor>
         <RiskyTruthyFalsyComparison>
-            <errorLevel type="suppress" />
+            <errorLevel type="suppress"/>
         </RiskyTruthyFalsyComparison>
     </issueHandlers>
 

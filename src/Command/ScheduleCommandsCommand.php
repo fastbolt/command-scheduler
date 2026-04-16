@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\CommandScheduler\Command;
 
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
@@ -16,6 +22,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ScheduleCommandsCommand extends Command
 {
+    /**
+     * @param CommandScheduleProvider $commandScheduleProvider
+     * @param CommandLogPersister     $commandLogPersister
+     */
     public function __construct(
         private readonly CommandScheduleProvider $commandScheduleProvider,
         private readonly CommandLogPersister $commandLogPersister,
@@ -23,11 +33,20 @@ class ScheduleCommandsCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @return void
+     */
     protected function configure(): void
     {
         parent::configure();
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

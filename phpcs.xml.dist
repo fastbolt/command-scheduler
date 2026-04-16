@@ -6,7 +6,7 @@
     <description>Fastbolt coding standard</description>
 
     <file>src</file>
-<!--    <file>tests</file>-->
+        <file>tests</file>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>
@@ -52,14 +52,14 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
 
     <rule ref="PSR2R.Namespaces.UnusedUseStatement"/>
-	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
-	    <properties>
-	        <property name="searchAnnotations" value="true"/>
-	    </properties>
-	</rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" value="true"/>
+        </properties>
+    </rule>
 
     <!-- Don't check the licence code blocks -->
-	<rule ref="Spryker.Commenting.FileDocBlock.FileDocBlockWrong">
+    <rule ref="Spryker.Commenting.FileDocBlock.FileDocBlockWrong">
         <severity>0</severity>
     </rule>
 

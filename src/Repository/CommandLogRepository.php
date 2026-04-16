@@ -156,7 +156,7 @@ class CommandLogRepository extends ServiceEntityRepository
      *
      * @return int
      */
-    public function getNumErrors(string $command, DateTimeInterface $first, DateTimeInterface $last):int
+    public function getNumErrors(string $command, DateTimeInterface $first, DateTimeInterface $last): int
     {
         return $this->createQueryBuilder('cl')
                     ->select('COUNT(cl.id)')
