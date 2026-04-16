@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'command-scheduler:schedule',
     description: 'Schedule commands for execution.',
 )]
-class ScheduleCommandsCommand extends Command
+final class ScheduleCommandsCommand extends Command
 {
     /**
      * @param CommandScheduleProvider $commandScheduleProvider

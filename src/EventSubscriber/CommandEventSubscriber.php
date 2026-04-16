@@ -8,7 +8,7 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CommandEventSubscriber implements EventSubscriberInterface
+final class CommandEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @param CommandLogRegistry  $commandLogRegistry

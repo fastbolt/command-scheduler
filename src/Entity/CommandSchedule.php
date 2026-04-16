@@ -16,7 +16,7 @@ use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
 #[ORM\Table(name: 'command_scheduler_schedules')]
 #[ORM\UniqueConstraint(name: 'unique_command_arguments', columns: ['command', 'arguments'])]
-class CommandSchedule
+final class CommandSchedule
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,7 +39,7 @@ class CommandSchedule
     private bool $enabled;
 
     #[ORM\Column]
-    private ?DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     /**
      * @var ArrayCollection<int, CommandLog>>

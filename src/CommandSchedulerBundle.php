@@ -12,7 +12,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class CommandSchedulerBundle extends Bundle
+final class CommandSchedulerBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container

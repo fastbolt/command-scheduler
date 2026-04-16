@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @psalm-suppress MixedMethodCall
  * @codeCoverageIgnore
  */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     /**
      * @return TreeBuilder

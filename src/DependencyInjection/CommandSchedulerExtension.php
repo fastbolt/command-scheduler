@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class CommandSchedulerExtension extends Extension
+final class CommandSchedulerExtension extends Extension
 {
     /**
      * @param array<string, mixed> $configs

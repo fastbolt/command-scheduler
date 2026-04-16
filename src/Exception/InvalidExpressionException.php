@@ -11,7 +11,7 @@ namespace Fastbolt\CommandScheduler\Exception;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Symfony\Component\Console\Exception\RuntimeException;
 
-class InvalidExpressionException extends RuntimeException
+final class InvalidExpressionException extends RuntimeException
 {
     /**
      * @param CommandSchedule $schedule

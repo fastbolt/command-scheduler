@@ -10,7 +10,7 @@ namespace Fastbolt\CommandScheduler\Exception;
 
 use Symfony\Component\Console\Exception\RuntimeException;
 
-class AcquireLockException extends RuntimeException
+final class AcquireLockException extends RuntimeException
 {
     /**
      * @param string $lockName

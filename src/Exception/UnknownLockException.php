@@ -11,7 +11,7 @@ namespace Fastbolt\CommandScheduler\Exception;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Lock\Exception\ExceptionInterface;
 
-class UnknownLockException extends RuntimeException
+final class UnknownLockException extends RuntimeException
 {
     /**
      * @param string                  $lockName
