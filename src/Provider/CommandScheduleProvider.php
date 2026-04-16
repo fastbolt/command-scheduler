@@ -48,8 +48,4 @@ class CommandScheduleProvider
 
         return $dueSchedules;
     }
-
-    public function getScheduledExecutions()
-    {
-    }
 }

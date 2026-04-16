@@ -75,7 +75,7 @@ class CommandLog
     /**
      * @return DateTimeImmutable
      */
-    public function getStartedAt(): DateTimeImmutable
+    public function getStartedAt(): ?DateTimeImmutable
     {
         return $this->startedAt;
     }

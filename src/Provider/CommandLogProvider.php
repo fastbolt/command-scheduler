@@ -2,6 +2,7 @@
 
 namespace Fastbolt\CommandScheduler\Provider;
 
+use DateTimeInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 use Symfony\Component\Console\Command\Command;
@@ -44,6 +45,11 @@ class CommandLogProvider
         return $this->commandLogRepository->findErrorCommands();
     }
 
+    /**
+     * @param string $command
+     *
+     * @return bool
+     */
     public function hasLastExecutionFailed(string $command): bool
     {
         if (null === ($lastExecution = $this->commandLogRepository->getLastExecution($command))) {
@@ -53,6 +59,9 @@ class CommandLogProvider
         return $lastExecution->getReturnCode() !== Command::SUCCESS;
     }
 
+    /**
+     * @return array<string,string>
+     */
     public function getScheduledCommandIdentifiers(): array
     {
         $result = array_filter(
@@ -67,8 +76,33 @@ class CommandLogProvider
         return array_combine($result, $result);
     }
 
+    /**
+     * @param string $command
+     *
+     * @return CommandLog|null
+     */
     public function getLastSuccess(string $command): ?CommandLog
     {
         return $this->commandLogRepository->getLastSuccess($command);
+    }
+
+    /**
+     * @param string            $command
+     * @param DateTimeInterface $first
+     * @param DateTimeInterface $last
+     *
+     * @return int
+     */
+    public function getNumErrors(string $command, DateTimeInterface $first, DateTimeInterface $last): int
+    {
+        return $this->commandLogRepository->getNumErrors($command, $first, $last);
+    }
+
+    /**
+     * @return iterable<CommandLog>
+     */
+    public function getScheduledAndRunningCommands(): iterable
+    {
+        return $this->commandLogRepository->findScheduledAndRunningCommands();
     }
 }
