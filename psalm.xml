@@ -19,17 +19,6 @@
         </ignoreFiles>
     </projectFiles>
 
-    <issueHandlers>
-        <PropertyNotSetInConstructor>
-            <errorLevel type="suppress">
-                <directory name="tests/"/>
-            </errorLevel>
-        </PropertyNotSetInConstructor>
-        <RiskyTruthyFalsyComparison>
-            <errorLevel type="suppress"/>
-        </RiskyTruthyFalsyComparison>
-    </issueHandlers>
-
     <fileExtensions>
         <extension name=".php"/>
     </fileExtensions>

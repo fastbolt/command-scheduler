@@ -14,8 +14,11 @@ use Symfony\Component\Lock\Exception\ExceptionInterface;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\LockInterface;
 
-class LockRegistry
+final class LockRegistry
 {
+    /**
+     * @var array<string, LockInterface>
+     */
     private array $locks = [];
 
     /**
@@ -50,7 +53,11 @@ class LockRegistry
      */
     private function commandToLogName(string $name): string
     {
-        return preg_replace('/[^a-zA-Z0-9]/', '_', $name);
+        if (null !== ($cleaned = preg_replace('/[^a-zA-Z0-9]/', '_', $name))) {
+            return $cleaned;
+        }
+
+        return $name;
     }
 
     /**

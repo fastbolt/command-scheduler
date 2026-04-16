@@ -13,6 +13,9 @@ use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Exception\InvalidExpressionException;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
+/**
+ * @api
+ */
 class CommandScheduleProvider
 {
     /**
@@ -26,9 +29,9 @@ class CommandScheduleProvider
     }
 
     /**
-     * @return iterable<CommandSchedule>
+     * @return CommandSchedule[]
      */
-    public function getDueCommands(): iterable
+    public function getDueCommands(): array
     {
         $alreadyScheduledCommands = $this->commandLogProvider->getScheduledCommandIdentifiers();
         $enabledSchedules         = $this->commandScheduleRepository->findEnabledSchedules();

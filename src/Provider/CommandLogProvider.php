@@ -13,6 +13,9 @@ use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 use Symfony\Component\Console\Command\Command;
 
+/**
+ * @api
+ */
 class CommandLogProvider
 {
     /**
@@ -28,17 +31,17 @@ class CommandLogProvider
      * "Running" are all commandLog entries where startedAt IS NOT NULL and finishedAt is null, ordered by startedAt
      * ascending.
      *
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function getRunningCommands(): iterable
+    public function getRunningCommands(): array
     {
         return $this->commandLogRepository->findRunningCommands();
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function getErrors(): iterable
+    public function getErrors(): array
     {
         return $this->commandLogRepository->findErrorCommands();
     }
@@ -65,7 +68,13 @@ class CommandLogProvider
         $result = array_filter(
             array_unique(
                 array_map(
-                    static fn(CommandLog $commandLog) => $commandLog->getCommandSchedule()?->getIdentifier() ?: null,
+                    static function (CommandLog $commandLog): ?string {
+                        if (null === $commandLog->getCommandSchedule()) {
+                            return null;
+                        }
+
+                        return $commandLog->getCommandSchedule()?->getIdentifier();
+                    },
                     $this->getScheduledCommands()
                 )
             )
@@ -78,9 +87,9 @@ class CommandLogProvider
      * Method for getting a list of all currently scheduled commands.
      * "Scheduled" are all commandLog entries where startedAt IS NULL, ordered by priority ascending.
      *
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function getScheduledCommands(): iterable
+    public function getScheduledCommands(): array
     {
         return $this->commandLogRepository->findScheduledCommands();
     }
@@ -108,9 +117,9 @@ class CommandLogProvider
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function getScheduledAndRunningCommands(): iterable
+    public function getScheduledAndRunningCommands(): array
     {
         return $this->commandLogRepository->findScheduledAndRunningCommands();
     }

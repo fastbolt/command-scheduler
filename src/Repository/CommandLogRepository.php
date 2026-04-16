@@ -20,7 +20,7 @@ use Symfony\Component\Console\Command\Command;
 /**
  * @extends ServiceEntityRepository<CommandLog>
  */
-class CommandLogRepository extends ServiceEntityRepository
+final class CommandLogRepository extends ServiceEntityRepository
 {
     /**
      * @param ManagerRegistry $registry
@@ -31,9 +31,9 @@ class CommandLogRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function findScheduledAndRunningCommands(): iterable
+    public function findScheduledAndRunningCommands(): array
     {
         $qb        = $this->createQueryBuilder('cl');
         $yesterday = (new DateTime())
@@ -59,9 +59,9 @@ class CommandLogRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function findScheduledCommands(): iterable
+    public function findScheduledCommands(): array
     {
         return $this->createQueryBuilder('cl')
                     ->leftJoin('cl.commandSchedule', 'c')
@@ -73,9 +73,9 @@ class CommandLogRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function findRunningCommands(): iterable
+    public function findRunningCommands(): array
     {
         $yesterday = (new DateTime())
             ->sub(new DateInterval('P1D'))
@@ -93,9 +93,9 @@ class CommandLogRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return CommandLog[]
      */
-    public function findErrorCommands(): iterable
+    public function findErrorCommands(): array
     {
         $yesterday = (new DateTime())
             ->sub(new DateInterval('P1D'))

@@ -14,7 +14,7 @@ use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
-class CommandLogPersister
+final class CommandLogPersister
 {
     /**
      * @param EntityManagerInterface    $entityManager

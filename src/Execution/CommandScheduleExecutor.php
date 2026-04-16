@@ -32,9 +32,11 @@ class CommandScheduleExecutor
      */
     public function execute(CommandLog $commandLog, SymfonyStyle $output): ?int
     {
-        $exception = null;
-        $lock      = null;
-        $command   = $commandLog->getCommandSchedule();
+        $exception   = null;
+        $lock        = null;
+        $command     = $commandLog->getCommandSchedule();
+        $commandName = null;
+        $result=null;
 
         try {
             $lock = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
@@ -45,8 +47,10 @@ class CommandScheduleExecutor
             // find executable from application stack
             $executable = $this->application->find($commandLog->getCommand());
 
+            $arguments = $command ? $command->getArguments() : '';
+
             // create command line input
-            $commandInput = new StringInput($command?->getArguments() ?: '');
+            $commandInput = new StringInput($arguments);
 
             // run executable
             $result = $executable->run($commandInput, $output);
@@ -66,7 +70,7 @@ class CommandScheduleExecutor
             $this->persister->finishLog($commandLog, $result);
 
             // release lock present
-            if (null !== $lock) {
+            if (null !== $lock && null !== $commandName) {
                 $this->lockRegistry->releaseLock($commandName);
             }
         }

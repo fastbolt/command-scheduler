@@ -10,8 +10,11 @@ namespace Fastbolt\CommandScheduler\Persistence;
 
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 
-class CommandLogRegistry
+final class CommandLogRegistry
 {
+    /**
+     * @var array<string, CommandLog>
+     */
     private array $logItemsBySplObjectHash = [];
 
     /**

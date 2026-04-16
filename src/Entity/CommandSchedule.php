@@ -42,7 +42,7 @@ class CommandSchedule
     private ?DateTimeImmutable $createdAt;
 
     /**
-     * @var iterable<CommandLog>
+     * @var ArrayCollection<int, CommandLog>>
      */
     #[ORM\OneToMany(targetEntity: CommandLog::class, mappedBy: 'commandSchedule')]
     private iterable $logs;
@@ -151,7 +151,7 @@ class CommandSchedule
     }
 
     /**
-     * @return iterable<CommandLog>
+     * @return ArrayCollection<int, CommandLog>
      */
     public function getLogs(): iterable
     {

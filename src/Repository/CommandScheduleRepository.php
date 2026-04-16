@@ -15,7 +15,7 @@ use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 /**
  * @extends ServiceEntityRepository<CommandSchedule>
  */
-class CommandScheduleRepository extends ServiceEntityRepository
+final class CommandScheduleRepository extends ServiceEntityRepository
 {
     /**
      * @param ManagerRegistry $registry
@@ -26,9 +26,9 @@ class CommandScheduleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return iterable<CommandSchedule>
+     * @return CommandSchedule[]
      */
-    public function findEnabledSchedules(): iterable
+    public function findEnabledSchedules(): array
     {
         return $this->findBy(['enabled' => true]);
     }
