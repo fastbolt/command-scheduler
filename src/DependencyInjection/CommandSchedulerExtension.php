@@ -29,7 +29,7 @@ final class CommandSchedulerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         // load configuration
-        $locator = new FileLocator(__DIR__ . '/../../config/');
+        $locator = new FileLocator(__DIR__ . '/../Resources/config/');
         $loader  = new YamlFileLoader($container, $locator);
         $loader->load('services.yaml');
     }

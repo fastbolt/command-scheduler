@@ -1,0 +1,4 @@
+command_scheduler:
+    resource: "@CommandSchedulerBundle/Controller/"
+    type: attribute
+

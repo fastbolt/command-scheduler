@@ -43,3 +43,8 @@ services:
 
     Fastbolt\CommandScheduler\Persistence\CommandLogRegistry:
 
+    Fastbolt\CommandScheduler\Controller\ListCommandSchedulesController:
+        tags: ['controller.service_arguments']
+        arguments:
+            $twig: '@twig'
+
