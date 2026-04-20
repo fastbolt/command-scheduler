@@ -1,0 +1,39 @@
+{% macro icon_checkbox() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M4 8.5L7 11.5L12 5.5" stroke="black" stroke-width="2" fill="none"/>
+    </svg>
+{% endmacro icon_checkbox %}
+
+{% macro icon_times() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <line x1="4.22" y1="4.22" x2="11.78" y2="11.78" stroke="black" stroke-width="2"/>
+        <line x1="11.78" y1="4.22" x2="4.22" y2="11.78" stroke="black" stroke-width="2"/>
+    </svg>
+{% endmacro icon_times %}
+
+{% macro icon_logs() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="4.5" y="4.5" width="11" height="11" rx="2" stroke="white" stroke-width="1.2" fill="none"/>
+        <line x1="7" y1="8" x2="13" y2="8" stroke="white" stroke-width="1.2"/>
+        <line x1="7" y1="11" x2="13" y2="11" stroke="white" stroke-width="1.2"/>
+        <line x1="7" y1="14" x2="11" y2="14" stroke="white" stroke-width="1.2"/>
+    </svg>
+{% endmacro icon_logs %}
+
+{% macro icon_schedules() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="4.5" y="5.5" width="11" height="9" rx="2" stroke="white" stroke-width="1.2" fill="none"/>
+        <line x1="7" y1="9" x2="13" y2="9" stroke="white" stroke-width="1.2"/>
+        <line x1="7" y1="12" x2="11" y2="12" stroke="white" stroke-width="1.2"/>
+        <rect x="7.5" y="3" width="1.5" height="3" rx="0.75" fill="white"/>
+        <rect x="11" y="3" width="1.5" height="3" rx="0.75" fill="white"/>
+    </svg>
+{% endmacro %}
+
+{% macro boolToIcon(value) %}
+    {% if value %}
+        {{ _self.icon_checkbox() }}
+    {% else %}
+        {{ _self.icon_times() }}
+    {% endif %}
+{% endmacro boolToIcon %}

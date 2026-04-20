@@ -123,4 +123,14 @@ class CommandLogProvider
     {
         return $this->commandLogRepository->findScheduledAndRunningCommands();
     }
+
+    /**
+     * Liefert alle CommandLog-Einträge.
+     *
+     * @return CommandLog[]
+     */
+    public function getAllLogs(): array
+    {
+        return $this->commandLogRepository->findAll();
+    }
 }

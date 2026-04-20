@@ -8,7 +8,9 @@
 
 namespace Fastbolt\CommandScheduler\Entity;
 
+use Cron\CronExpression;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
@@ -172,5 +174,12 @@ class CommandSchedule
     public function getIdentifier(): string
     {
         return md5($this->command . $this->arguments);
+    }
+
+    public function getNextRun(): DateTimeInterface
+    {
+        $expr = new CronExpression($this->getCronExpression());
+
+        return $expr->getNextRunDate();
     }
 }

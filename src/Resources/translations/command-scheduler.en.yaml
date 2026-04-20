@@ -1,0 +1,13 @@
+command-scheduler:
+    schedules:
+        header: Schedules
+    fields:
+        id: ID
+        command: Command
+        arguments: Arguments
+        cron-expression: Cron Expression
+        priority: Priority
+        enabled: Enabled
+        created-at: Created At
+        next-run: Next Run
+        actions: ''

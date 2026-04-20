@@ -47,4 +47,10 @@ services:
         tags: ['controller.service_arguments']
         arguments:
             $twig: '@twig'
+            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
 
+    Fastbolt\CommandScheduler\Controller\ListCommandLogsController:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $twig: '@twig'
+            $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'

@@ -2,6 +2,8 @@
 
 namespace Fastbolt\CommandScheduler\Controller;
 
+use ApiPlatform\State\ProviderInterface;
+use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,29 +20,22 @@ class ListCommandSchedulesController
      */
     public function __construct(
         private readonly Environment $twig,
-    )
-    {
+        private readonly CommandScheduleProvider $commandScheduleProvider,
+    ) {
     }
 
     /**
      * @return Response
      */
-    #[Route('/')]
-    public function renderAction(): Response
+    public function __invoke(): Response
     {
-        return $this->renderView(
-            '@CommandScheduler/schedules-list.html.twig',
+        return new Response(
+            $this->twig->render(
+                '@CommandScheduler/schedules-list.html.twig',
+                [
+                    'schedules' => $this->commandScheduleProvider->getSchedules(),
+                ]
+            )
         );
-    }
-
-    /**
-     * @param string $view
-     * @param array  $parameters
-     *
-     * @return Response
-     */
-    protected function renderView(string $view, array $parameters = []): Response
-    {
-        return new Response($this->twig->render($view, $parameters));
     }
 }

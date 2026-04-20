@@ -1,0 +1,27 @@
+command-scheduler:
+    schedules:
+        header: Schedules
+        empty: No scheduled commands found.
+    logs:
+        header: Command Logs
+        empty: No logs found.
+    fields:
+        id: ID
+        command: Command
+        arguments: Arguments
+        cron-expression: Cron Expression
+        priority: Priority
+        enabled: Enabled
+        created-at: Created At
+        next-run: Next Run
+        actions: Actions
+        schedule: Schedule
+        started-at: Started At
+        finished-at: Finished At
+        return-code: Return Code
+        output: Output
+    menu:
+        schedules: Schedules
+        logs: Logs
+        settings: Settings
+

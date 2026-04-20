@@ -1,0 +1,51 @@
+{% trans_default_domain 'command-scheduler' %}
+
+{% import '@CommandScheduler/helpers/macros.html.twig' as macros %}
+
+{% extends '@CommandScheduler/base.html.twig' %}
+
+{% block command_scheduler_title %}
+    - {{ 'command-scheduler.schedules.header' | trans(domain: 'command-scheduler') }}
+{% endblock %}
+
+{% set commandSchedulerActiveView = 'schedules-list' %}
+
+{% block command_scheduler_content %}
+    <div class="container-fluid" id="social">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ 'command-scheduler.logs.header' | trans(domain: 'command-scheduler') }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="text-right">ID</th>
+                        <th>Command</th>
+                        <th>Created At</th>
+                        <th>Started At</th>
+                        <th>Finished At</th>
+                        <th class="text-right">Return Code</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td class="text-right">{{ log.id }}</td>
+                                <td>{{ log.command }}</td>
+                                <td>{{ log.createdAt | date }}</td>
+                                <td>{{ log.startedAt ? log.startedAt|date : '' }}</td>
+                                <td>{{ log.finishedAt ? log.finishedAt|date : '' }}</td>
+                                <td class="text-right">{{ log.returnCode }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
