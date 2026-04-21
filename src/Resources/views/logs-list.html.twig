@@ -28,6 +28,7 @@
                         <th>{{ 'command-scheduler.table.created_at'|trans }}</th>
                         <th>{{ 'command-scheduler.table.started_at'|trans }}</th>
                         <th>{{ 'command-scheduler.table.finished_at'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.created_by'|trans }}</th>
                         <th class="text-right">{{ 'command-scheduler.table.return_code'|trans }}</th>
                         <th>{{ 'command-scheduler.table.actions'|trans }}</th>
                     </tr>
@@ -40,6 +41,7 @@
                                 <td>{{ log.createdAt | date }}</td>
                                 <td>{{ log.startedAt ? log.startedAt|date : '' }}</td>
                                 <td>{{ log.finishedAt ? log.finishedAt|date : '' }}</td>
+                                <td>{{ log.userIdentifier ?: '' }}</td>
                                 <td class="text-right">{{ log.returnCode }}</td>
                                 <td>
                                     {% if log.commandSchedule and log.startedAt %}
