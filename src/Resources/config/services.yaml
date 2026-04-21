@@ -50,24 +50,32 @@ services:
     Fastbolt\CommandScheduler\Controller\ListCommandSchedulesController:
         tags: ['controller.service_arguments']
         arguments:
-            $twig: '@twig'
+            $requestStack: '@request_stack'
+            $environment: '@twig'
+            $router: '@router'
             $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
 
     Fastbolt\CommandScheduler\Controller\ListCommandLogsController:
         tags: [ 'controller.service_arguments' ]
         arguments:
-            $twig: '@twig'
+            $requestStack: '@request_stack'
+            $environment: '@twig'
+            $router: '@router'
             $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
 
     Fastbolt\CommandScheduler\Controller\ScheduleCommandController:
         tags: [ 'controller.service_arguments' ]
         arguments:
-            $persister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+            $requestStack: '@request_stack'
+            $environment: '@twig'
             $router: '@router'
+            $persister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
 
     Fastbolt\CommandScheduler\Controller\DashboardController:
         tags: [ 'controller.service_arguments' ]
         arguments:
-            $twig: '@twig'
+            $requestStack: '@request_stack'
+            $environment: '@twig'
+            $router: '@router'
             $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
             $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
