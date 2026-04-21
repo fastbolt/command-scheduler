@@ -19,6 +19,11 @@
             <div class="cs-navbar-container">
                 <span class="cs-navbar-brand">Command Scheduler</span>
                 <ul class="cs-navbar-links">
+                    <li class="{% if commandSchedulerActiveView == 'dashboard' %}active{% endif %}">
+                        <a href="{{ path('command_scheduler_dashboard') }}">
+                            {{ macros.icon_dashboard() }} {{ 'command-scheduler.menu.dashboard'|trans }}
+                        </a>
+                    </li>
                     <li class="{% if commandSchedulerActiveView == 'schedules-list' %}active{% endif %}">
                         <a href="{{ path('command_scheduler_schedules_list') }}">
                             {{ macros.icon_schedules() }} {{ 'command-scheduler.menu.schedules'|trans }}

@@ -74,4 +74,9 @@ class CommandScheduleProvider
 
         return $result;
     }
+
+    public function getNumSchedules(): int
+    {
+        return $this->commandScheduleRepository->count([]);
+    }
 }

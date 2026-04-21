@@ -131,6 +131,16 @@ class CommandLogProvider
      */
     public function getAllLogs(): array
     {
-        return $this->commandLogRepository->findAll();
+        return $this->commandLogRepository->findBy([],['createdAt' => 'DESC', 'startedAt' => 'DESC']);
+    }
+
+    /**
+     * Gibt die Anzahl aller CommandLog-Einträge zurück.
+     *
+     * @return int
+     */
+    public function getNumLogs(): int
+    {
+        return $this->commandLogRepository->count([]);
     }
 }
