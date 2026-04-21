@@ -3,21 +3,28 @@
 namespace Fastbolt\CommandScheduler\Controller;
 
 use Fastbolt\CommandScheduler\Provider\CommandLogProvider;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Twig\Environment;
 
 #[Route('/command-scheduler/logs/list', name: 'command_scheduler_logs_list', methods: ['GET'])]
-class ListCommandLogsController
+final class ListCommandLogsController extends BaseController
 {
     /**
-     * @param Environment        $twig
+     * @param RequestStack       $requestStack
+     * @param Environment        $environment
+     * @param Router    $router
      * @param CommandLogProvider $commandLogProvider
      */
     public function __construct(
-        private readonly Environment $twig,
+        private readonly RequestStack $requestStack,
+        private readonly Environment $environment,
+        private readonly Router $router,
         private readonly CommandLogProvider $commandLogProvider
     ) {
+        parent::__construct($this->requestStack, $this->environment, $this->router);
     }
 
     /**
@@ -27,13 +34,11 @@ class ListCommandLogsController
     {
         $logs = $this->commandLogProvider->getAllLogs();
 
-        return new Response(
-            $this->twig->render(
-                '@CommandScheduler/logs-list.html.twig',
-                [
-                    'logs' => $logs,
-                ]
-            )
+        return $this->renderView(
+            '@CommandScheduler/logs-list.html.twig',
+            [
+                'logs' => $logs,
+            ]
         );
     }
 }

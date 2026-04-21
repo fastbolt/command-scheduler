@@ -6,20 +6,27 @@ use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Twig\Environment;
 
 #[Route('/command-scheduler/schedule/{id}', name: 'command_scheduler_schedule_command', methods: ['GET'])]
-class ScheduleCommandController
+final class ScheduleCommandController extends BaseController
 {
     /**
+     * @param RequestStack        $requestStack
+     * @param Environment         $environment
+     * @param Router     $router
      * @param CommandLogPersister $persister
-     * @param RouterInterface     $router
      */
     public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly Environment $environment,
+        private readonly Router $router,
         private readonly CommandLogPersister $persister,
-        private readonly RouterInterface $router,
     ) {
+        parent::__construct($this->requestStack, $this->environment, $this->router);
     }
 
     /**
@@ -32,10 +39,8 @@ class ScheduleCommandController
     {
         $this->persister->createScheduleLog($commandSchedule);
 
-        $request->getSession()->getFlashBag()->add('success', 'Command scheduled for execution.');
+        $this->addFlash('success', 'Command scheduled for execution.');
 
-        return new RedirectResponse(
-            $this->router->generate('command_scheduler_logs_list')
-        );
+        return $this->redirectToRoute('command_scheduler_logs_list');
     }
 }
