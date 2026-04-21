@@ -73,7 +73,7 @@ class CommandLogProvider
                             return null;
                         }
 
-                        return $commandLog->getCommandSchedule()->getIdentifier();
+                        return $commandLog->getCommandSchedule()?->getIdentifier();
                     },
                     $this->getScheduledCommands()
                 )
@@ -122,5 +122,25 @@ class CommandLogProvider
     public function getScheduledAndRunningCommands(): array
     {
         return $this->commandLogRepository->findScheduledAndRunningCommands();
+    }
+
+    /**
+     * Liefert alle CommandLog-Einträge.
+     *
+     * @return CommandLog[]
+     */
+    public function getAllLogs(): array
+    {
+        return $this->commandLogRepository->findBy([], ['createdAt' => 'DESC', 'startedAt' => 'DESC']);
+    }
+
+    /**
+     * Gibt die Anzahl aller CommandLog-Einträge zurück.
+     *
+     * @return int
+     */
+    public function getNumLogs(): int
+    {
+        return $this->commandLogRepository->count([]);
     }
 }

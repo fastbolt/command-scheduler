@@ -61,4 +61,28 @@ class CommandScheduleProvider
 
         return $dueSchedules;
     }
+
+    /**
+     * @return CommandSchedule[]
+     */
+    public function getSchedules(): array
+    {
+        $result = $this->commandScheduleRepository->findAll();
+        usort(
+            $result,
+            function (CommandSchedule $a, CommandSchedule $b) {
+                return $a->getNextRun() <=> $b->getNextRun();
+            }
+        );
+
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumSchedules(): int
+    {
+        return $this->commandScheduleRepository->count([]);
+    }
 }

@@ -19,10 +19,14 @@ services:
         $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
 
     Fastbolt\CommandScheduler\Repository\CommandScheduleRepository:
-        $registry: '@doctrine'
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
 
     Fastbolt\CommandScheduler\Repository\CommandLogRepository:
-        $registry: '@doctrine'
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
 
     Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor:
         $lockRegistry: '@Fastbolt\CommandScheduler\Lock\LockRegistry'
@@ -43,3 +47,27 @@ services:
 
     Fastbolt\CommandScheduler\Persistence\CommandLogRegistry:
 
+    Fastbolt\CommandScheduler\Controller\ListCommandSchedulesController:
+        tags: ['controller.service_arguments']
+        arguments:
+            $twig: '@twig'
+            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'
+
+    Fastbolt\CommandScheduler\Controller\ListCommandLogsController:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $twig: '@twig'
+            $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
+
+    Fastbolt\CommandScheduler\Controller\ScheduleCommandController:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $persister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+            $router: '@router'
+
+    Fastbolt\CommandScheduler\Controller\DashboardController:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $twig: '@twig'
+            $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
+            $commandScheduleProvider: '@Fastbolt\CommandScheduler\Provider\CommandScheduleProvider'

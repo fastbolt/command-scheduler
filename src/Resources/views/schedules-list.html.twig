@@ -1,0 +1,61 @@
+{% trans_default_domain 'command-scheduler' %}
+
+{% import '@CommandScheduler/helpers/macros.html.twig' as macros %}
+
+{% extends '@CommandScheduler/base.html.twig' %}
+
+{% block command_scheduler_title %}
+    - {{ 'command-scheduler.schedules.header' | trans(domain: 'command-scheduler') }}
+{% endblock %}
+
+{% set commandSchedulerActiveView = 'schedules-list' %}
+
+{% block command_scheduler_content %}
+    <div class="container-fluid" id="social">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ 'command-scheduler.schedules.header' | trans(domain: 'command-scheduler') }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="text-right">{{ 'command-scheduler.fields.id' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.command' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.arguments' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.cron-expression' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.next-run' | trans }}</th>
+                        <th class="text-right">{{ 'command-scheduler.fields.priority' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.enabled' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.created-at' | trans }}</th>
+                        <th>{{ 'command-scheduler.fields.actions' | trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for schedule in schedules %}
+                        <tr>
+                            <td class="text-right">{{ schedule.id }}</td>
+                            <td>{{ schedule.command }}</td>
+                            <td>{{ schedule.arguments }}</td>
+                            <td>{{ schedule.cronExpression }}</td>
+                            <td>
+                                {% if schedule.enabled %}
+                                    {{ schedule.nextRun | date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="text-right">{{ schedule.priority | format_number }}</td>
+                            <td>{{ macros.boolToIcon(schedule.enabled) }}</td>
+                            <td>{{ schedule.createdAt | date }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% trans_default_domain 'command-scheduler' %}
+
+{% import '@CommandScheduler/helpers/macros.html.twig' as macros %}
+
+{% extends '@CommandScheduler/base.html.twig' %}
+
+{% block command_scheduler_title %}
+    - {{ 'command-scheduler.schedules.header' | trans(domain: 'command-scheduler') }}
+{% endblock %}
+
+{% set commandSchedulerActiveView = 'schedules-list' %}
+
+{% block command_scheduler_content %}
+    <div class="container-fluid" id="social">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ 'command-scheduler.logs.header' |trans }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="text-right">{{ 'command-scheduler.table.id'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.command'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.created_at'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.started_at'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.finished_at'|trans }}</th>
+                        <th class="text-right">{{ 'command-scheduler.table.return_code'|trans }}</th>
+                        <th>{{ 'command-scheduler.table.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td class="text-right">{{ log.id }}</td>
+                                <td>{{ log.command }}</td>
+                                <td>{{ log.createdAt | date }}</td>
+                                <td>{{ log.startedAt ? log.startedAt|date : '' }}</td>
+                                <td>{{ log.finishedAt ? log.finishedAt|date : '' }}</td>
+                                <td class="text-right">{{ log.returnCode }}</td>
+                                <td>
+                                    {% if log.commandSchedule and log.startedAt %}
+                                        <a href="{{ path('command_scheduler_schedule_command', {'id': log.commandSchedule.id}) }}" class="btn-action">{{ macros.icon_repeat() }} {{ 'command-scheduler.action.repeat'|trans }}</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>ö
+{% endblock %}

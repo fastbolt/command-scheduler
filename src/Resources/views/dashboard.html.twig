@@ -1,0 +1,30 @@
+{% trans_default_domain 'command-scheduler' %}
+
+{% extends '@CommandScheduler/base.html.twig' %}
+
+{% block command_scheduler_title %}
+    - {{ 'command-scheduler.dashboard.header'|trans }}
+{% endblock %}
+
+{% set commandSchedulerActiveView = 'dashboard' %}
+
+{% block command_scheduler_content %}
+    <div class="container-fluid" id="social">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ 'command-scheduler.dashboard.header'|trans }}</h1>
+                <p>{{ 'command-scheduler.dashboard.intro'|trans }}</p>
+                <div class="dashboard-stats">
+                    <a href="{{ path('command_scheduler_schedules_list') }}" class="dashboard-stat dashboard-stat-link">
+                        <div class="dashboard-stat-value">{{ numSchedules }}</div>
+                        <div class="dashboard-stat-label">{{ 'command-scheduler.dashboard.schedules' | trans }}</div>
+                    </a>
+                    <a href="{{ path('command_scheduler_logs_list') }}" class="dashboard-stat dashboard-stat-link">
+                        <div class="dashboard-stat-value">{{ numLogs }}</div>
+                        <div class="dashboard-stat-label">{{ 'command-scheduler.dashboard.logs' | trans }}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
