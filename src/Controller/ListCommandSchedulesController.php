@@ -13,7 +13,8 @@ use Twig\Environment;
 class ListCommandSchedulesController
 {
     /**
-     * @param Environment $twig
+     * @param Environment             $twig
+     * @param CommandScheduleProvider $commandScheduleProvider
      */
     public function __construct(
         private readonly Environment $twig,

@@ -11,6 +11,11 @@ use Twig\Environment;
 #[Route('/command-scheduler', name: 'command_scheduler_dashboard', methods: ['GET'])]
 class DashboardController
 {
+    /**
+     * @param Environment             $twig
+     * @param CommandLogProvider      $commandLogProvider
+     * @param CommandScheduleProvider $commandScheduleProvider
+     */
     public function __construct(
         private readonly Environment $twig,
         private readonly CommandLogProvider $commandLogProvider,
@@ -18,6 +23,9 @@ class DashboardController
     ) {
     }
 
+    /**
+     * @return Response
+     */
     public function __invoke(): Response
     {
         return new Response(

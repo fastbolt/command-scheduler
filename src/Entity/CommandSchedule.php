@@ -176,6 +176,9 @@ class CommandSchedule
         return md5($this->command . $this->arguments);
     }
 
+    /**
+     * @return DateTimeInterface
+     */
     public function getNextRun(): DateTimeInterface
     {
         $expr = new CronExpression($this->getCronExpression());

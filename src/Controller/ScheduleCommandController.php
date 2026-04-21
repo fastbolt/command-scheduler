@@ -12,12 +12,22 @@ use Symfony\Component\Routing\RouterInterface;
 #[Route('/command-scheduler/schedule/{id}', name: 'command_scheduler_schedule_command', methods: ['GET'])]
 class ScheduleCommandController
 {
+    /**
+     * @param CommandLogPersister $persister
+     * @param RouterInterface     $router
+     */
     public function __construct(
         private readonly CommandLogPersister $persister,
         private readonly RouterInterface $router,
     ) {
     }
 
+    /**
+     * @param Request         $request
+     * @param CommandSchedule $commandSchedule
+     *
+     * @return RedirectResponse
+     */
     public function __invoke(Request $request, CommandSchedule $commandSchedule): RedirectResponse
     {
         $this->persister->createScheduleLog($commandSchedule);
