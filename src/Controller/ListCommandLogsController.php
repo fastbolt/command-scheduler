@@ -3,7 +3,6 @@
 namespace Fastbolt\CommandScheduler\Controller;
 
 use Fastbolt\CommandScheduler\Provider\CommandLogProvider;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -31,4 +30,3 @@ class ListCommandLogsController
         );
     }
 }
-

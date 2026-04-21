@@ -131,7 +131,7 @@ class CommandLogProvider
      */
     public function getAllLogs(): array
     {
-        return $this->commandLogRepository->findBy([],['createdAt' => 'DESC', 'startedAt' => 'DESC']);
+        return $this->commandLogRepository->findBy([], ['createdAt' => 'DESC', 'startedAt' => 'DESC']);
     }
 
     /**
