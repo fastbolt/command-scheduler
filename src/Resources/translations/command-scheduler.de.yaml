@@ -3,7 +3,7 @@ command-scheduler:
         header: Zeitpläne
         empty: Keine geplanten Befehle gefunden.
     logs:
-        header: Befehlsprotokolle
+        header: Protokolle
         empty: Keine Protokolle gefunden.
     fields:
         id: ID
@@ -11,7 +11,7 @@ command-scheduler:
         arguments: Argumente
         cron-expression: Cron-Ausdruck
         priority: Priorität
-        enabled: Aktiviertcommand-scheduler.dashboard.schedules
+        enabled: Aktiviert
         created-at: Erstellt am
         next-run: Nächster Lauf
         actions: Aktionen
@@ -27,6 +27,7 @@ command-scheduler:
         settings: Einstellungen
     action:
         repeat: Wiederholen
+        execute: Ausführen
     table:
         id: ID
         command: Befehl
@@ -35,6 +36,7 @@ command-scheduler:
         finished_at: Beendet am
         return_code: Rückgabewert
         actions: Aktionen
+        created_by: Erstellt von
     dashboard:
         header: Übersicht
         intro: Willkommen im Command Scheduler Dashboard. Hier finden Sie eine Übersicht und Statistiken.

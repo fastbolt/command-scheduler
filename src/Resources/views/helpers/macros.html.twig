@@ -47,6 +47,12 @@
     </svg>
 {% endmacro %}
 
+{% macro icon_play() %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <polygon points="4,3 13,8 4,13" fill="white"/>
+    </svg>
+{% endmacro %}
+
 {% macro boolToIcon(value) %}
     {% if value %}
         {{ _self.icon_checkbox() }}

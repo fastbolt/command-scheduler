@@ -29,6 +29,7 @@
         "symfony/framework-bundle": "^6.4",
         "symfony/lock": "^6.4",
         "symfony/polyfill-php83": "^1.36",
+        "symfony/security-bundle": "^6.4",
         "symfony/twig-bundle": "^6.4"
     },
     "require-dev" : {

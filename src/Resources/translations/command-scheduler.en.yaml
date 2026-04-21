@@ -1,6 +1,10 @@
 command-scheduler:
     schedules:
         header: Schedules
+        empty: No scheduled commands found.
+    logs:
+        header: Logs
+        empty: No logs found.
     fields:
         id: ID
         command: Command
@@ -10,4 +14,32 @@ command-scheduler:
         enabled: Enabled
         created-at: Created At
         next-run: Next Run
-        actions: ''
+        actions: Actions
+        schedule: Schedule
+        started-at: Started At
+        finished-at: Finished At
+        return-code: Return Code
+        output: Output
+    menu:
+        dashboard: Overview
+        schedules: Schedules
+        logs: Logs
+        settings: Settings
+    action:
+        repeat: Repeat
+        execute: Execute
+    table:
+        id: ID
+        command: Command
+        created_at: Created At
+        started_at: Started At
+        finished_at: Finished At
+        return_code: Return Code
+        actions: Actions
+        created_by: Created By
+    dashboard:
+        header: Overview
+        intro: Welcome to the Command Scheduler Dashboard. Here you will find an overview and statistics.
+        schedules: Schedules
+        logs: Logs
+

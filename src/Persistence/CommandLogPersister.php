@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
+use Fastbolt\CommandScheduler\User\UserProvider;
 
 final class CommandLogPersister
 {
@@ -22,7 +23,8 @@ final class CommandLogPersister
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly CommandScheduleRepository $commandScheduleRepository
+        private readonly CommandScheduleRepository $commandScheduleRepository,
+        private readonly UserProvider $userProvider,
     ) {
     }
 
@@ -37,6 +39,7 @@ final class CommandLogPersister
             $schedule->getCommand(),
             $schedule,
         );
+        $log->setUserIdentifier($this->userProvider->getUserIdentifier());
         $this->entityManager->persist($log);
         $this->entityManager->flush();
 
@@ -56,6 +59,7 @@ final class CommandLogPersister
             $schedule,
         );
         $log->setStartedAt(new DateTimeImmutable());
+        $log->setUserIdentifier($this->userProvider->getUserIdentifier());
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();

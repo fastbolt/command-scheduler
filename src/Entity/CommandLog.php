@@ -41,6 +41,9 @@ class CommandLog
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $userIdentifier = null;
+
     /**
      * @param string               $command
      * @param CommandSchedule|null $commandSchedule
@@ -130,5 +133,21 @@ class CommandLog
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserIdentifier(): ?string
+    {
+        return $this->userIdentifier;
+    }
+
+    /**
+     * @param string|null $userIdentifier
+     */
+    public function setUserIdentifier(?string $userIdentifier): void
+    {
+        $this->userIdentifier = $userIdentifier;
     }
 }
