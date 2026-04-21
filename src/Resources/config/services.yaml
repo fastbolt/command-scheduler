@@ -83,3 +83,4 @@ services:
 
     Fastbolt\CommandScheduler\User\UserProvider:
         $tokenStorage: '@security.token_storage'
+

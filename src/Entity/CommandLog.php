@@ -9,6 +9,7 @@
 namespace Fastbolt\CommandScheduler\Entity;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
@@ -43,6 +44,12 @@ class CommandLog
 
     #[ORM\Column(nullable: true)]
     private ?string $userIdentifier = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private string $status = '';
+
+    #[ORM\Column(length: 255)]
+    private string $statusText = '';
 
     /**
      * @param string               $command
@@ -149,5 +156,37 @@ class CommandLog
     public function setUserIdentifier(?string $userIdentifier): void
     {
         $this->userIdentifier = $userIdentifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusText(): string
+    {
+        return $this->statusText;
+    }
+
+    /**
+     * @param string $statusText
+     */
+    public function setStatusText(string $statusText): void
+    {
+        $this->statusText = $statusText;
     }
 }
