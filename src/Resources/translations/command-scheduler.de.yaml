@@ -3,7 +3,7 @@ command-scheduler:
         header: Zeitpläne
         empty: Keine geplanten Befehle gefunden.
     logs:
-        header: PÜrotokolle
+        header: Protokolle
         empty: Keine Protokolle gefunden.
     fields:
         id: ID
@@ -27,6 +27,7 @@ command-scheduler:
         settings: Einstellungen
     action:
         repeat: Wiederholen
+        execute: Ausführen
     table:
         id: ID
         command: Befehl
