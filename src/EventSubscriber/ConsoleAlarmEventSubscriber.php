@@ -2,22 +2,25 @@
 
 namespace Fastbolt\CommandScheduler\EventSubscriber;
 
+use Fastbolt\CommandScheduler\Command\StatusCommandInterface;
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
 use Fastbolt\CommandScheduler\Persistence\CommandLogRegistry;
 use Override;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\Console\Event\ConsoleAlarmEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
-final class CommandEventSubscriber implements EventSubscriberInterface
+final class ConsoleAlarmEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @param CommandLogRegistry  $commandLogRegistry
      * @param CommandLogPersister $commandLogPersister
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         private readonly CommandLogRegistry $commandLogRegistry,
         private readonly CommandLogPersister $commandLogPersister,
+        private readonly SerializerInterface $serializer
     ) {
     }
 
@@ -28,17 +31,16 @@ final class CommandEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            ConsoleCommandEvent::class   => 'onConsoleCommand',
-            ConsoleTerminateEvent::class => 'onConsoleTerminate',
+            ConsoleAlarmEvent::class => 'onConsoleAlarm',
         ];
     }
 
     /**
-     * @param ConsoleCommandEvent $event
+     * @param ConsoleAlarmEvent $event
      *
      * @return void
      */
-    public function onConsoleCommand(ConsoleCommandEvent $event): void
+    public function onConsoleAlarm(ConsoleAlarmEvent $event): void
     {
         // fail silently
         if (null === ($command = $event->getCommand())) {
@@ -50,30 +52,18 @@ final class CommandEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-//        if(null !== ($application = $command->getApplication()) && method_exists()) {}
-//
-//        $command->getApplication()->setAlarm
-
-        $log = $this->commandLogPersister->createLog($commandName);
-        $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
-    }
-
-    /**
-     * @param ConsoleTerminateEvent $event
-     *
-     * @return void
-     */
-    public function onConsoleTerminate(ConsoleTerminateEvent $event): void
-    {
-        // fail silently
-        if (null === ($command = $event->getCommand())) {
+        // we only can check / persist status on commands implementing our interface
+        if (!$command instanceof StatusCommandInterface) {
             return;
         }
 
-        // fail silently
         if (null === ($log = $this->commandLogRegistry->getItem(spl_object_hash($command)))) {
             return;
         }
-        $this->commandLogPersister->finishLog($log, $event->getExitCode());
+
+        $status     = $this->serializer->serialize($command->getStatus(), 'json');
+        $statusText = $command->getStatusText();
+
+        $this->commandLogPersister->updateStatus($log, $status, $statusText);
     }
 }

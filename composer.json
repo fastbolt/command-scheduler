@@ -30,6 +30,8 @@
         "symfony/lock": "^7.4",
         "symfony/polyfill-php83": "^1.36",
         "symfony/security-bundle": "^7.4",
+        "symfony/serializer": "7.4",
+        "symfony/serializer-pack": "^1.4",
         "symfony/twig-bundle": "^7.4"
     },
     "require-dev" : {
