@@ -12,9 +12,9 @@ abstract class StatusCommand extends Command implements StatusCommandInterface
 {
     private const DEFAULT_ALARM_INTERVAL = 10;
 
-    protected string $statusText = '';
+    private string $statusText = '';
 
-    protected mixed $status = null;
+    private mixed $status = null;
 
     /**
      * @return mixed
@@ -45,13 +45,17 @@ abstract class StatusCommand extends Command implements StatusCommandInterface
 
     /**
      * @param string $statusText
-     * @param mixed  $status
-     *
-     * @return void
      */
-    protected function updateStatus(string $statusText, mixed $status): void
+    public function setStatusText(string $statusText): void
     {
         $this->statusText = $statusText;
-        $this->status     = $status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus(mixed $status): void
+    {
+        $this->status = $status;
     }
 }
