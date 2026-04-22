@@ -84,16 +84,31 @@ class CommandStatus
         $this->progress = $progress;
     }
 
+    /**
+     * @param int $increment
+     *
+     * @return void
+     */
     public function increaseSuccess(int $increment = 1): void
     {
         $this->numSuccess += $increment;
     }
 
+    /**
+     * @param int $increment
+     *
+     * @return void
+     */
     public function increaseError(int $increment = 1): void
     {
         $this->numErrors += $increment;
     }
 
+    /**
+     * @param float $increment
+     *
+     * @return void
+     */
     public function increaseProgress(float $increment = 1): void
     {
         $this->progress += $increment;
