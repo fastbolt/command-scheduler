@@ -6,11 +6,11 @@ use InvalidArgumentException;
 
 class CommandStatus
 {
-    private int $numErrors;
+    private int $numErrors = 0;
 
-    private int $numSuccess;
+    private int $numSuccess = 0;
 
-    private float $progress;
+    private float $progress = 0.0;
 
     /**
      * @return int
