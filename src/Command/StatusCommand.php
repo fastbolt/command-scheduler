@@ -42,4 +42,16 @@ abstract class StatusCommand extends Command implements StatusCommandInterface
     {
         return self::DEFAULT_ALARM_INTERVAL;
     }
+
+    /**
+     * @param string $statusText
+     * @param mixed  $status
+     *
+     * @return void
+     */
+    protected function updateStatus(string $statusText, mixed $status): void
+    {
+        $this->statusText = $statusText;
+        $this->status     = $status;
+    }
 }

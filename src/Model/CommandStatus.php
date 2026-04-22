@@ -13,6 +13,23 @@ class CommandStatus
     private float $progress = 0.0;
 
     /**
+     * @param int   $numErrors
+     * @param int   $numSuccess
+     * @param float $progress
+     *
+     * @return self
+     */
+    public static function create(int $numErrors, int $numSuccess, float $progress): self
+    {
+        $instance = new self();
+        $instance->setNumErrors($numErrors);
+        $instance->setNumSuccess($numSuccess);
+        $instance->setProgress($progress);
+
+        return $instance;
+    }
+
+    /**
      * @return int
      */
     public function getNumErrors(): int
