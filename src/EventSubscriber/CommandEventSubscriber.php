@@ -50,9 +50,9 @@ final class CommandEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if(null !== ($application = $command->getApplication()) && method_exists()) {}
-
-        $command->getApplication()->setAlarm
+//        if(null !== ($application = $command->getApplication()) && method_exists()) {}
+//
+//        $command->getApplication()->setAlarm
 
         $log = $this->commandLogPersister->createLog($commandName);
         $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
