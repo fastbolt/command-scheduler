@@ -5,6 +5,9 @@ namespace Fastbolt\CommandScheduler\Command;
 use Override;
 use Symfony\Component\Console\Command\Command;
 
+/**
+ * @api
+ */
 abstract class StatusCommand extends Command implements StatusCommandInterface
 {
     private const DEFAULT_ALARM_INTERVAL = 10;

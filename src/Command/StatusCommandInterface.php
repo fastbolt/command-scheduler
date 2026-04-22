@@ -4,6 +4,9 @@ namespace Fastbolt\CommandScheduler\Command;
 
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 
+/**
+ * @api
+ */
 interface StatusCommandInterface extends SignalableCommandInterface
 {
     /**
