@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class Configuration implements ConfigurationInterface
 {
     /**
-     * @return TreeBuilder
+     * @return TreeBuilder<'array'>
      */
     #[Override]
     public function getConfigTreeBuilder(): TreeBuilder
