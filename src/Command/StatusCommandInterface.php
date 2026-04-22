@@ -23,20 +23,10 @@ interface StatusCommandInterface extends SignalableCommandInterface
     public function getStatusText(): string;
 
     /**
-     * @param mixed $status
+     * Interval to update status in seconds. Every N seconds, the `getStatus` and `getStatusText` methods will be
+     * called and the results will be persisted to the database. This is used to update the status of a
+     * command while it is running.
      *
-     * @return void
-     */
-    public function setStatus(mixed $status): void;
-
-    /**
-     * @param string $statusText
-     *
-     * @return void
-     */
-    public function setStatusText(string $statusText): void;
-
-    /**
      * @return int
      */
     public function getAlarmInterval(): int;
