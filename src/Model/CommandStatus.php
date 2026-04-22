@@ -4,6 +4,9 @@ namespace Fastbolt\CommandScheduler\Model;
 
 use InvalidArgumentException;
 
+/**
+ * @api
+ */
 class CommandStatus
 {
     private int $numErrors = 0;
