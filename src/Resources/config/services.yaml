@@ -40,7 +40,20 @@ services:
         $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
         $userProvider: '@Fastbolt\CommandScheduler\User\UserProvider'
 
-    Fastbolt\CommandScheduler\EventSubscriber\CommandEventSubscriber:
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleAlarmEventSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+            $serializer: '@serializer'
+
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleCommandEventSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleTerminateEventSubscriber:
         tags: [ 'kernel.event_subscriber' ]
         arguments:
             $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
