@@ -211,6 +211,9 @@ class CommandLog
         $this->changedAt = $changedAt;
     }
 
+    /**
+     * @return void
+     */
     #[ORM\PreUpdate]
     public function preUpdate(): void
     {

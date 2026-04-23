@@ -3,6 +3,7 @@
 namespace Fastbolt\CommandScheduler\Model;
 
 use InvalidArgumentException;
+use Override;
 
 /**
  * @api
@@ -35,6 +36,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @return int
      */
+    #[Override]
     public function getNumErrors(): int
     {
         return $this->numErrors;
@@ -43,6 +45,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @param int $numErrors
      */
+    #[Override]
     public function setNumErrors(int $numErrors): void
     {
         $this->numErrors = $numErrors;
@@ -51,6 +54,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @return int
      */
+    #[Override]
     public function getNumSuccess(): int
     {
         return $this->numSuccess;
@@ -59,6 +63,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @param int $numSuccess
      */
+    #[Override]
     public function setNumSuccess(int $numSuccess): void
     {
         $this->numSuccess = $numSuccess;
@@ -67,6 +72,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @return float
      */
+    #[Override]
     public function getProgress(): float
     {
         return $this->progress;
@@ -75,6 +81,7 @@ class CommandStatus implements CommandStatusInterface
     /**
      * @param float $progress
      */
+    #[Override]
     public function setProgress(float $progress): void
     {
         if ($progress > 100 || $progress < 0) {
@@ -89,6 +96,7 @@ class CommandStatus implements CommandStatusInterface
      *
      * @return void
      */
+    #[Override]
     public function increaseSuccess(int $increment = 1): void
     {
         $this->numSuccess += $increment;
@@ -99,6 +107,7 @@ class CommandStatus implements CommandStatusInterface
      *
      * @return void
      */
+    #[Override]
     public function increaseError(int $increment = 1): void
     {
         $this->numErrors += $increment;
@@ -109,6 +118,7 @@ class CommandStatus implements CommandStatusInterface
      *
      * @return void
      */
+    #[Override]
     public function increaseProgress(float $increment = 1): void
     {
         $this->progress += $increment;
