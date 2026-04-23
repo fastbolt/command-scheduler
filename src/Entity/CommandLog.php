@@ -15,6 +15,7 @@ use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
 #[ORM\Entity(repositoryClass: CommandLogRepository::class)]
 #[ORM\Table(name: 'command_scheduler_logs')]
+#[ORM\HasLifecycleCallbacks]
 class CommandLog
 {
     public const COMMAND_RETURN_EXCEPTION = -1;
@@ -39,6 +40,9 @@ class CommandLog
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $finishedAt = null;
 
+    #[ORM\Column]
+    private ?DateTimeImmutable $changedAt;
+
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
 
@@ -60,6 +64,7 @@ class CommandLog
         $this->command         = $command;
         $this->commandSchedule = $commandSchedule;
         $this->createdAt       = new DateTimeImmutable();
+        $this->changedAt       = new DateTimeImmutable();
     }
 
     /**
@@ -188,5 +193,27 @@ class CommandLog
     public function setStatusText(string $statusText): void
     {
         $this->statusText = $statusText;
+    }
+
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getChangedAt(): ?DateTimeImmutable
+    {
+        return $this->changedAt;
+    }
+
+    /**
+     * @param DateTimeImmutable|null $changedAt
+     */
+    public function setChangedAt(?DateTimeImmutable $changedAt): void
+    {
+        $this->changedAt = $changedAt;
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->changedAt = new DateTimeImmutable();
     }
 }

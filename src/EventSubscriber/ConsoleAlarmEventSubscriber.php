@@ -61,9 +61,12 @@ final class ConsoleAlarmEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // as per docs, this should not be necessary? However, if I remove this, the command is terminated after first
+        // event handler execution...
+        $event->abortExit();
+
         $status     = $this->serializer->serialize($command->getStatus(), 'json');
         $statusText = $command->getStatusText();
-
         $this->commandLogPersister->updateStatus($log, $status, $statusText);
     }
 }

@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * @api
  */
-class CommandStatus
+class CommandStatus implements CommandStatusInterface
 {
     private int $numErrors = 0;
 

@@ -2,6 +2,7 @@
 
 namespace Fastbolt\CommandScheduler\Command;
 
+use Fastbolt\CommandScheduler\Model\CommandStatusInterface;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
 
 /**
@@ -10,15 +11,15 @@ use Symfony\Component\Console\Command\SignalableCommandInterface;
 interface StatusCommandInterface extends SignalableCommandInterface
 {
     /**
-     * May return anything which can be serialized by the symfony serializer.
+     * Must return null or an instance of `CommandStatusInterface`.
      *
      * Serialization is automatically done in `ConsoleAlarmEventSubscriber` and persisted to the database.
      *
      * Please ensure your symfony serializer and value objects are properly configured.
      *
-     * @return mixed
+     * @return CommandStatusInterface|null
      */
-    public function getStatus(): mixed;
+    public function getStatus(): ?CommandStatusInterface;
 
     /**
      * @return string

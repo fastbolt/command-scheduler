@@ -123,6 +123,9 @@ final class CommandLogPersister
         $log->setStatusText($statusText);
         $log->setStatus($status);
 
+        // set explicitly to ensure it is set even if statusText and status have not changed.
+        $log->setChangedAt(new DateTimeImmutable());
+
         $this->entityManager->persist($log);
         $this->entityManager->flush();
     }

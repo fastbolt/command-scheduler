@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param CommandLogRegistry  $commandLogRegistry
+     * @param CommandLogRegistry $commandLogRegistry
      * @param CommandLogPersister $commandLogPersister
      */
     public function __construct(
@@ -52,7 +52,14 @@ final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
 
         /** @var Application $application */
         if ($command instanceof StatusCommandInterface && null !== ($application = $command->getApplication())) {
-            $application->setAlarmInterval($command->getAlarmInterval());
+            $interval = $command->getAlarmInterval();
+            if (($output = $event->getOutput())->isVerbose()) {
+                $output->writeln(
+                    sprintf('<info>%s</info>', sprintf('Setting update interval to %s seconds', $interval))
+                );
+            }
+
+            $application->setAlarmInterval($interval);
         }
 
         $log = $this->commandLogPersister->createLog($commandName);
