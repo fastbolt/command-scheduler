@@ -179,9 +179,17 @@ class CommandSchedule
     /**
      * @return DateTimeInterface
      */
-    public function getNextRun(): DateTimeInterface
+    public function getNextRun(): ?DateTimeInterface
     {
-        $expr = new CronExpression($this->getCronExpression());
+        if (!CronExpression::isValidExpression($expression = $this->getCronExpression())) {
+            return null;
+        }
+
+        if (!$this->isEnabled()) {
+            return null;
+        }
+
+        $expr = new CronExpression($expression);
 
         return $expr->getNextRunDate();
     }

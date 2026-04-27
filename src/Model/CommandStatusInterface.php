@@ -60,4 +60,14 @@ interface CommandStatusInterface
      * @return void
      */
     public function increaseProgress(float $increment): void;
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    public function getAdditional(): array;
+
+    /**
+     * @param array<array-key, mixed> $additional
+     */
+    public function setAdditional(array $additional): void;
 }

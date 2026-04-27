@@ -16,19 +16,23 @@ class CommandStatus implements CommandStatusInterface
 
     private float $progress = 0.0;
 
+    private array $additional = [];
+
     /**
-     * @param int   $numErrors
-     * @param int   $numSuccess
-     * @param float $progress
+     * @param int                     $numErrors
+     * @param int                     $numSuccess
+     * @param float                   $progress
+     * @param array<array-key, mixed> $additional
      *
      * @return self
      */
-    public static function create(int $numErrors, int $numSuccess, float $progress): self
+    public static function create(int $numErrors, int $numSuccess, float $progress = 0.0, array $additional = []): self
     {
         $instance = new self();
         $instance->setNumErrors($numErrors);
         $instance->setNumSuccess($numSuccess);
         $instance->setProgress($progress);
+        $instance->setAdditional($additional);
 
         return $instance;
     }
@@ -122,5 +126,23 @@ class CommandStatus implements CommandStatusInterface
     public function increaseProgress(float $increment = 1): void
     {
         $this->progress += $increment;
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    #[Override]
+    public function getAdditional(): array
+    {
+        return $this->additional;
+    }
+
+    /**
+     * @param array<array-key, mixed> $additional
+     */
+    #[Override]
+    public function setAdditional(array $additional): void
+    {
+        $this->additional = $additional;
     }
 }
