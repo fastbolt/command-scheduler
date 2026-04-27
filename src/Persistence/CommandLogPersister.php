@@ -24,7 +24,7 @@ final class CommandLogPersister
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly CommandScheduleRepository $commandScheduleRepository,
-        private readonly UserProvider $userProvider,
+        private readonly UserProvider $userProvider
     ) {
     }
 
@@ -106,6 +106,25 @@ final class CommandLogPersister
     public function startLog(CommandLog $log): void
     {
         $log->setStartedAt(new DateTimeImmutable());
+
+        $this->entityManager->persist($log);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param CommandLog $log
+     * @param string     $status
+     * @param string     $statusText
+     *
+     * @return void
+     */
+    public function updateStatus(CommandLog $log, string $status, string $statusText): void
+    {
+        $log->setStatusText($statusText);
+        $log->setStatus($status);
+
+        // set explicitly to ensure it is set even if statusText and status have not changed.
+        $log->setChangedAt(new DateTimeImmutable());
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();

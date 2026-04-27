@@ -24,13 +24,15 @@
         "doctrine/orm": "^2.12|^3.2",
         "doctrine/persistence": "^2.4|^3.0",
         "dragonmantank/cron-expression": "^3.6",
-        "symfony/config": "^6.4",
-        "symfony/console": "^6.4",
-        "symfony/framework-bundle": "^6.4",
-        "symfony/lock": "^6.4",
+        "symfony/config": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/lock": "^7.4",
         "symfony/polyfill-php83": "^1.36",
-        "symfony/security-bundle": "^6.4",
-        "symfony/twig-bundle": "^6.4"
+        "symfony/security-bundle": "^7.4",
+        "symfony/serializer": "^7.4",
+        "symfony/serializer-pack": "^1.4",
+        "symfony/twig-bundle": "^7.4"
     },
     "require-dev" : {
         "fig-r/psr2r-sniffer" : "^1.3",

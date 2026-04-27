@@ -44,21 +44,17 @@ final class CommandScheduleExecutor
         $result      = null;
 
         try {
-            $lock = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
-
             // set started
             $this->persister->startLog($commandLog);
 
-            // find executable from application stack
-            $executable = $application->find($commandLog->getCommand());
-
+            $lock      = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
             $arguments = $command ? $command->getArguments() : '';
 
             // create command line input
-            $commandInput = new StringInput($arguments);
+            $commandInput = new StringInput($commandName . ' ' . $arguments);
 
             // run executable
-            $result = $executable->run($commandInput, $output);
+            $result = $application->run($commandInput, $output);
         } catch (Exception $exception) {
             $result = CommandLog::COMMAND_RETURN_EXCEPTION;
 
