@@ -9,7 +9,6 @@
 namespace Fastbolt\CommandScheduler\Persistence;
 
 use DateTimeImmutable;
-use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManagerInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;

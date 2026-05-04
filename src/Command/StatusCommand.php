@@ -28,21 +28,20 @@ abstract class StatusCommand extends Command implements StatusCommandInterface
     }
 
     /**
+     * @param CommandStatusInterface|null $status
+     */
+    public function setStatus(?CommandStatusInterface $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
      * @return string
      */
     #[Override]
     public function getStatusText(): string
     {
         return $this->statusText;
-    }
-
-    /**
-     * @return int
-     */
-    #[Override]
-    public function getAlarmInterval(): int
-    {
-        return self::DEFAULT_ALARM_INTERVAL;
     }
 
     /**
@@ -54,11 +53,12 @@ abstract class StatusCommand extends Command implements StatusCommandInterface
     }
 
     /**
-     * @param CommandStatusInterface|null $status
+     * @return int
      */
-    public function setStatus(?CommandStatusInterface $status): void
+    #[Override]
+    public function getAlarmInterval(): int
     {
-        $this->status = $status;
+        return self::DEFAULT_ALARM_INTERVAL;
     }
 
     /**

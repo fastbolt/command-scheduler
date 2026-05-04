@@ -46,19 +46,11 @@ abstract class BaseController
     }
 
     /**
-     * @param string $template
-     * @param array  $parameters
-     *
-     * @return Response
+     * @return FlashBagInterface
      */
-    protected function renderView(string $template, array $parameters = []): Response
+    private function getFlashBag(): FlashBagInterface
     {
-        return new Response(
-            $this->environment->render(
-                $template,
-                $parameters
-            )
-        );
+        return $this->getSession()->getFlashBag();
     }
 
     /**
@@ -73,10 +65,18 @@ abstract class BaseController
     }
 
     /**
-     * @return FlashBagInterface
+     * @param string $template
+     * @param array  $parameters
+     *
+     * @return Response
      */
-    private function getFlashBag(): FlashBagInterface
+    protected function renderView(string $template, array $parameters = []): Response
     {
-        return $this->getSession()->getFlashBag();
+        return new Response(
+            $this->environment->render(
+                $template,
+                $parameters
+            )
+        );
     }
 }

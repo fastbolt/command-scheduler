@@ -114,38 +114,6 @@ class CommandSchedule
     }
 
     /**
-     * @return string
-     */
-    public function getCronExpression(): string
-    {
-        return $this->cronExpression;
-    }
-
-    /**
-     * @param string $cronExpression
-     */
-    public function setCronExpression(string $cronExpression): void
-    {
-        $this->cronExpression = $cronExpression;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @param bool $enabled
-     */
-    public function setEnabled(bool $enabled): void
-    {
-        $this->enabled = $enabled;
-    }
-
-    /**
      * @return DateTimeImmutable
      */
     public function getCreatedAt(): DateTimeImmutable
@@ -193,5 +161,37 @@ class CommandSchedule
         $expr = new CronExpression($expression);
 
         return $expr->getNextRunDate();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCronExpression(): string
+    {
+        return $this->cronExpression;
+    }
+
+    /**
+     * @param string $cronExpression
+     */
+    public function setCronExpression(string $cronExpression): void
+    {
+        $this->cronExpression = $cronExpression;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

@@ -52,7 +52,8 @@
                             <td>{{ schedule.createdAt | date }}</td>
                             <td>
                                 {% if schedule.enabled %}
-                                    <a href="{{ path('command_scheduler_schedule_command', {'id': schedule.id}) }}" class="btn-action">{{ macros.icon_play() }} {{ 'command-scheduler.action.execute'|trans }}</a>
+                                    <a href="{{ path('command_scheduler_schedule_command', {'id': schedule.id}) }}"
+                                       class="btn-action">{{ macros.icon_play() }} {{ 'command-scheduler.action.execute'|trans }}</a>
                                 {% endif %}
                             </td>
                         </tr>

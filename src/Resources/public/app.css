@@ -29,7 +29,7 @@
         border-spacing: 0;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         margin-bottom: 2rem;
         overflow: hidden;
 
@@ -39,18 +39,22 @@
             vertical-align: middle;
             text-align: left;
         }
+
         th {
             background: #f8f9fa;
             font-weight: 600;
             font-size: 1rem;
         }
+
         tr:last-child td {
             border-bottom: none;
         }
+
         td svg {
             display: block;
             margin: 0 auto;
         }
+
         tbody tr:hover {
             background: #f6f8fa;
             transition: background 0.2s;
@@ -60,11 +64,12 @@
     .cs-navbar {
         background: #23272b;
         color: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         padding: 0;
         margin-bottom: 2rem;
         font-size: 1rem;
     }
+
     .cs-navbar-container {
         display: flex;
         align-items: center;
@@ -74,12 +79,14 @@
         padding: 0.5rem 2rem;
         gap: 2rem;
     }
+
     .cs-navbar-brand {
         font-weight: bold;
         font-size: 1.2rem;
         letter-spacing: 0.04em;
         margin-right: 2.5rem;
     }
+
     .cs-navbar-links {
         list-style: none;
         display: flex;
@@ -87,10 +94,12 @@
         margin: 0;
         padding: 0;
     }
+
     .cs-navbar-links li {
         display: flex;
         align-items: center;
     }
+
     .cs-navbar-links a {
         color: #fff;
         text-decoration: none;
@@ -102,12 +111,14 @@
         gap: 0.5rem;
         min-height: 32px;
     }
+
     .cs-navbar-links a svg {
         display: inline-block;
         vertical-align: middle;
         height: 20px;
         width: 20px;
     }
+
     .cs-navbar-links a:hover {
         background: #495057;
         color: #fff;
@@ -127,7 +138,7 @@
         text-decoration: none;
         transition: background 0.18s, color 0.18s;
         outline: none;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     }
 
     .btn-action:hover, .btn-action:focus {
@@ -142,11 +153,12 @@
         margin-top: 2.5rem;
         margin-bottom: 2.5rem;
     }
+
     .dashboard-stat {
         background: #23272b;
         color: #fff;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
         padding: 2rem 2.5rem;
         min-width: 180px;
         display: flex;
@@ -155,30 +167,35 @@
         justify-content: center;
         transition: box-shadow 0.2s;
     }
+
     .dashboard-stat:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
     }
+
     .dashboard-stat-value {
         font-size: 2.8rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
         letter-spacing: 0.03em;
     }
+
     .dashboard-stat-label {
         font-size: 1.1rem;
         opacity: 0.85;
         letter-spacing: 0.01em;
     }
+
     .dashboard-stat-link {
         text-decoration: none;
         color: inherit;
         transition: box-shadow 0.2s, background 0.2s, color 0.2s;
         color: white;
     }
+
     .dashboard-stat-link:hover, .dashboard-stat-link:focus {
         background: #495057;
         color: #fff;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
         text-decoration: none;
     }
 }
