@@ -3,6 +3,7 @@
 namespace Fastbolt\CommandScheduler\Persistence;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
 final class SchemaManager
@@ -36,7 +37,11 @@ final class SchemaManager
      */
     private function tableExists(string $table): bool
     {
-        return $this->schemaManager->tablesExist([$table]);
+        try {
+            return $this->schemaManager->tablesExist([$table]);
+        } catch (DBALException) {
+            return false;
+        }
     }
 
     /**
