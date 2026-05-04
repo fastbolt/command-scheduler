@@ -4,10 +4,10 @@ namespace Fastbolt\CommandScheduler\Controller;
 
 use Fastbolt\CommandScheduler\Provider\CommandLogProvider;
 use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Twig\Environment;
 
 #[Route('/command-scheduler', name: 'command_scheduler_dashboard', methods: ['GET'])]

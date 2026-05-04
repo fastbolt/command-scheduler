@@ -13,10 +13,12 @@ services:
 
     Fastbolt\CommandScheduler\Provider\CommandLogProvider:
         $commandLogRepository: '@Fastbolt\CommandScheduler\Repository\CommandLogRepository'
+        $schemaManager: '@Fastbolt\CommandScheduler\Persistence\SchemaManager'
 
     Fastbolt\CommandScheduler\Provider\CommandScheduleProvider:
         $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
         $commandLogProvider: '@Fastbolt\CommandScheduler\Provider\CommandLogProvider'
+        $schemaManager: '@Fastbolt\CommandScheduler\Persistence\SchemaManager'
 
     Fastbolt\CommandScheduler\Repository\CommandScheduleRepository:
         arguments:
@@ -39,8 +41,22 @@ services:
         $entityManager: '@doctrine.orm.entity_manager'
         $commandScheduleRepository: '@Fastbolt\CommandScheduler\Repository\CommandScheduleRepository'
         $userProvider: '@Fastbolt\CommandScheduler\User\UserProvider'
+        $schemaManager: '@Fastbolt\CommandScheduler\Persistence\SchemaManager'
 
-    Fastbolt\CommandScheduler\EventSubscriber\CommandEventSubscriber:
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleAlarmEventSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+            $serializer: '@serializer'
+
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleCommandEventSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+        arguments:
+            $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
+            $commandLogPersister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+
+    Fastbolt\CommandScheduler\EventSubscriber\ConsoleTerminateEventSubscriber:
         tags: [ 'kernel.event_subscriber' ]
         arguments:
             $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
@@ -83,3 +99,6 @@ services:
 
     Fastbolt\CommandScheduler\User\UserProvider:
         $tokenStorage: '@security.token_storage'
+
+    Fastbolt\CommandScheduler\Persistence\SchemaManager:
+        $connection: '@Doctrine\DBAL\Connection'

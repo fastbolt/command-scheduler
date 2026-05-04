@@ -9,11 +9,14 @@
 namespace Fastbolt\CommandScheduler\Entity;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
 #[ORM\Entity(repositoryClass: CommandLogRepository::class)]
-#[ORM\Table(name: 'command_scheduler_logs')]
+#[ORM\Table(name: SchemaManager::TABLE_NAME_COMMAND_LOG)]
+#[ORM\HasLifecycleCallbacks]
 class CommandLog
 {
     public const COMMAND_RETURN_EXCEPTION = -1;
@@ -38,11 +41,20 @@ class CommandLog
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $finishedAt = null;
 
+    #[ORM\Column]
+    private ?DateTimeImmutable $changedAt;
+
     #[ORM\Column(nullable: true)]
     private ?int $returnCode = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $userIdentifier = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private string $status = '';
+
+    #[ORM\Column(length: 255)]
+    private string $statusText = '';
 
     /**
      * @param string               $command
@@ -53,6 +65,7 @@ class CommandLog
         $this->command         = $command;
         $this->commandSchedule = $commandSchedule;
         $this->createdAt       = new DateTimeImmutable();
+        $this->changedAt       = new DateTimeImmutable();
     }
 
     /**
@@ -149,5 +162,62 @@ class CommandLog
     public function setUserIdentifier(?string $userIdentifier): void
     {
         $this->userIdentifier = $userIdentifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusText(): string
+    {
+        return $this->statusText;
+    }
+
+    /**
+     * @param string $statusText
+     */
+    public function setStatusText(string $statusText): void
+    {
+        $this->statusText = $statusText;
+    }
+
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getChangedAt(): ?DateTimeImmutable
+    {
+        return $this->changedAt;
+    }
+
+    /**
+     * @param DateTimeImmutable|null $changedAt
+     */
+    public function setChangedAt(?DateTimeImmutable $changedAt): void
+    {
+        $this->changedAt = $changedAt;
+    }
+
+    /**
+     * @return void
+     */
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->changedAt = new DateTimeImmutable();
     }
 }

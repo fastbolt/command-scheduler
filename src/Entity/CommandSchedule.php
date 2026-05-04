@@ -13,10 +13,11 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
-#[ORM\Table(name: 'command_scheduler_schedules')]
+#[ORM\Table(name: SchemaManager::TABLE_NAME_COMMAND_SCHEDULE)]
 #[ORM\UniqueConstraint(name: 'unique_command_arguments', columns: ['command', 'arguments'])]
 class CommandSchedule
 {
@@ -113,38 +114,6 @@ class CommandSchedule
     }
 
     /**
-     * @return string
-     */
-    public function getCronExpression(): string
-    {
-        return $this->cronExpression;
-    }
-
-    /**
-     * @param string $cronExpression
-     */
-    public function setCronExpression(string $cronExpression): void
-    {
-        $this->cronExpression = $cronExpression;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @param bool $enabled
-     */
-    public function setEnabled(bool $enabled): void
-    {
-        $this->enabled = $enabled;
-    }
-
-    /**
      * @return DateTimeImmutable
      */
     public function getCreatedAt(): DateTimeImmutable
@@ -179,10 +148,50 @@ class CommandSchedule
     /**
      * @return DateTimeInterface
      */
-    public function getNextRun(): DateTimeInterface
+    public function getNextRun(): ?DateTimeInterface
     {
-        $expr = new CronExpression($this->getCronExpression());
+        if (!CronExpression::isValidExpression($expression = $this->getCronExpression())) {
+            return null;
+        }
+
+        if (!$this->isEnabled()) {
+            return null;
+        }
+
+        $expr = new CronExpression($expression);
 
         return $expr->getNextRunDate();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCronExpression(): string
+    {
+        return $this->cronExpression;
+    }
+
+    /**
+     * @param string $cronExpression
+     */
+    public function setCronExpression(string $cronExpression): void
+    {
+        $this->cronExpression = $cronExpression;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

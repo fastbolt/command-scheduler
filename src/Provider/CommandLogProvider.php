@@ -10,6 +10,7 @@ namespace Fastbolt\CommandScheduler\Provider;
 
 use DateTimeInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 use Symfony\Component\Console\Command\Command;
 
@@ -23,6 +24,7 @@ class CommandLogProvider
      */
     public function __construct(
         private readonly CommandLogRepository $commandLogRepository,
+        private readonly SchemaManager $schemaManager
     ) {
     }
 
@@ -35,6 +37,10 @@ class CommandLogProvider
      */
     public function getRunningCommands(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         return $this->commandLogRepository->findRunningCommands();
     }
 
@@ -43,6 +49,10 @@ class CommandLogProvider
      */
     public function getErrors(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         return $this->commandLogRepository->findErrorCommands();
     }
 
@@ -53,6 +63,9 @@ class CommandLogProvider
      */
     public function hasLastExecutionFailed(string $command): bool
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return false;
+        }
         if (null === ($lastExecution = $this->commandLogRepository->getLastExecution($command))) {
             return false;
         }
@@ -65,6 +78,10 @@ class CommandLogProvider
      */
     public function getScheduledCommandIdentifiers(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         $result = array_filter(
             array_unique(
                 array_map(
@@ -91,6 +108,10 @@ class CommandLogProvider
      */
     public function getScheduledCommands(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         return $this->commandLogRepository->findScheduledCommands();
     }
 
@@ -101,6 +122,10 @@ class CommandLogProvider
      */
     public function getLastSuccess(string $command): ?CommandLog
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return null;
+        }
+
         return $this->commandLogRepository->getLastSuccess($command);
     }
 
@@ -113,6 +138,10 @@ class CommandLogProvider
      */
     public function getNumErrors(string $command, DateTimeInterface $first, DateTimeInterface $last): int
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return 0;
+        }
+
         return $this->commandLogRepository->getNumErrors($command, $first, $last);
     }
 
@@ -121,6 +150,10 @@ class CommandLogProvider
      */
     public function getScheduledAndRunningCommands(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         return $this->commandLogRepository->findScheduledAndRunningCommands();
     }
 
@@ -131,6 +164,10 @@ class CommandLogProvider
      */
     public function getAllLogs(): array
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return [];
+        }
+
         return $this->commandLogRepository->findBy([], ['createdAt' => 'DESC', 'startedAt' => 'DESC']);
     }
 
@@ -141,6 +178,10 @@ class CommandLogProvider
      */
     public function getNumLogs(): int
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return 0;
+        }
+
         return $this->commandLogRepository->count([]);
     }
 }

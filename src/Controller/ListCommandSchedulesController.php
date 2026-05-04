@@ -3,11 +3,11 @@
 namespace Fastbolt\CommandScheduler\Controller;
 
 use Fastbolt\CommandScheduler\Provider\CommandScheduleProvider;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Twig\Environment;
 
 #[AsController]
@@ -15,9 +15,9 @@ use Twig\Environment;
 final class ListCommandSchedulesController extends BaseController
 {
     /**
-     * @param RequestStack            $requestStack
-     * @param Environment             $environment
-     * @param Router         $router
+     * @param RequestStack $requestStack
+     * @param Environment $environment
+     * @param Router $router
      * @param CommandScheduleProvider $commandScheduleProvider
      */
     public function __construct(

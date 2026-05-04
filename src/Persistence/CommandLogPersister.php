@@ -25,16 +25,21 @@ final class CommandLogPersister
         private readonly EntityManagerInterface $entityManager,
         private readonly CommandScheduleRepository $commandScheduleRepository,
         private readonly UserProvider $userProvider,
+        private readonly SchemaManager $schemaManager
     ) {
     }
 
     /**
      * @param CommandSchedule $schedule
      *
-     * @return CommandLog
+     * @return CommandLog|null
      */
-    public function createScheduleLog(CommandSchedule $schedule): CommandLog
+    public function createScheduleLog(CommandSchedule $schedule): ?CommandLog
     {
+        if (!$this->schemaManager->logTableExists()) {
+            return null;
+        }
+
         $log = new CommandLog(
             $schedule->getCommand(),
             $schedule,
@@ -49,10 +54,15 @@ final class CommandLogPersister
     /**
      * @param string $command
      *
-     * @return CommandLog
+     * @return CommandLog|null
      */
-    public function createLog(string $command): CommandLog
+    public function createLog(string $command): ?CommandLog
     {
+        // ensure jobs can be executed even though table does not exist
+        if (!$this->schemaManager->logTableExists()) {
+            return null;
+        }
+
         $schedule = $this->getScheduleForCommand($command);
         $log      = new CommandLog(
             $command,
@@ -74,6 +84,11 @@ final class CommandLogPersister
      */
     private function getScheduleForCommand(string $command): ?CommandSchedule
     {
+        // ensure jobs can be executed even though table does not exist
+        if (!$this->schemaManager->scheduleTableExists()) {
+            return null;
+        }
+
         $items = $this->commandScheduleRepository->findBy(['command' => $command]);
         if (!$items || count($items) > 1) {
             return null;
@@ -106,6 +121,25 @@ final class CommandLogPersister
     public function startLog(CommandLog $log): void
     {
         $log->setStartedAt(new DateTimeImmutable());
+
+        $this->entityManager->persist($log);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param CommandLog $log
+     * @param string     $status
+     * @param string     $statusText
+     *
+     * @return void
+     */
+    public function updateStatus(CommandLog $log, string $status, string $statusText): void
+    {
+        $log->setStatusText($statusText);
+        $log->setStatus($status);
+
+        // set explicitly to ensure it is set even if statusText and status have not changed.
+        $log->setChangedAt(new DateTimeImmutable());
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();

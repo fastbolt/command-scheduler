@@ -4,11 +4,11 @@ namespace Fastbolt\CommandScheduler\Controller;
 
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Twig\Environment;
 
 #[Route('/command-scheduler/schedule/{id}', name: 'command_scheduler_schedule_command', methods: ['GET'])]
@@ -17,7 +17,7 @@ final class ScheduleCommandController extends BaseController
     /**
      * @param RequestStack        $requestStack
      * @param Environment         $environment
-     * @param Router     $router
+     * @param Router              $router
      * @param CommandLogPersister $persister
      */
     public function __construct(
