@@ -13,10 +13,11 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 #[ORM\Entity(repositoryClass: CommandScheduleRepository::class)]
-#[ORM\Table(name: 'command_scheduler_schedules')]
+#[ORM\Table(name: SchemaManager::TABLE_NAME_COMMAND_SCHEDULE)]
 #[ORM\UniqueConstraint(name: 'unique_command_arguments', columns: ['command', 'arguments'])]
 class CommandSchedule
 {

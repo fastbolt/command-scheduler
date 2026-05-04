@@ -11,6 +11,7 @@ namespace Fastbolt\CommandScheduler\Provider;
 use Cron\CronExpression;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
 use Fastbolt\CommandScheduler\Exception\InvalidExpressionException;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandScheduleRepository;
 
 /**
@@ -25,6 +26,7 @@ class CommandScheduleProvider
     public function __construct(
         private readonly CommandScheduleRepository $commandScheduleRepository,
         private readonly CommandLogProvider $commandLogProvider,
+        private readonly SchemaManager $schemaManager
     ) {
     }
 
@@ -33,6 +35,10 @@ class CommandScheduleProvider
      */
     public function getDueCommands(): array
     {
+        if (!$this->schemaManager->scheduleTableExists()) {
+            return [];
+        }
+
         $alreadyScheduledCommands = $this->commandLogProvider->getScheduledCommandIdentifiers();
         $enabledSchedules         = $this->commandScheduleRepository->findEnabledSchedules();
         $dueSchedules             = [];
@@ -67,6 +73,10 @@ class CommandScheduleProvider
      */
     public function getSchedules(): array
     {
+        if (!$this->schemaManager->scheduleTableExists()) {
+            return [];
+        }
+
         $result = $this->commandScheduleRepository->findAll();
         usort(
             $result,
@@ -98,6 +108,10 @@ class CommandScheduleProvider
      */
     public function getNumSchedules(): int
     {
+        if (!$this->schemaManager->scheduleTableExists()) {
+            return 0;
+        }
+
         return $this->commandScheduleRepository->count([]);
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @param CommandLogRegistry $commandLogRegistry
+     * @param CommandLogRegistry  $commandLogRegistry
      * @param CommandLogPersister $commandLogPersister
      */
     public function __construct(
@@ -62,7 +62,8 @@ final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
             $application->setAlarmInterval($interval);
         }
 
-        $log = $this->commandLogPersister->createLog($commandName);
-        $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
+        if (null !== ($log = $this->commandLogPersister->createLog($commandName))) {
+            $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
+        }
     }
 }

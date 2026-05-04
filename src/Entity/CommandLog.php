@@ -11,10 +11,11 @@ namespace Fastbolt\CommandScheduler\Entity;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Fastbolt\CommandScheduler\Persistence\SchemaManager;
 use Fastbolt\CommandScheduler\Repository\CommandLogRepository;
 
 #[ORM\Entity(repositoryClass: CommandLogRepository::class)]
-#[ORM\Table(name: 'command_scheduler_logs')]
+#[ORM\Table(name: SchemaManager::TABLE_NAME_COMMAND_LOG)]
 #[ORM\HasLifecycleCallbacks]
 class CommandLog
 {
