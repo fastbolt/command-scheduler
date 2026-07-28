@@ -55,7 +55,10 @@ final class ExecuteCommandsCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // I did not find any way to inject Application object using DIC, so dirty we go...
-        $this->commandScheduleExecutor->setApplication($this->getApplication());
+        if (null !== ($application = $this->getApplication())) {
+            $application->setAutoExit(false);
+        }
+        $this->commandScheduleExecutor->setApplication($application);
 
         // find scheduled commands
         $commands = $this->commandLogProvider->getScheduledCommands();
