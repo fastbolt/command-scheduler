@@ -55,7 +55,7 @@ final class ExecuteCommandsCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // I did not find any way to inject Application object using DIC, so dirty we go...
-        if(null !== ($application = $this->getApplication())) {
+        if (null !== ($application = $this->getApplication())) {
             $application->setAutoExit(false);
         }
         $this->commandScheduleExecutor->setApplication($application);
