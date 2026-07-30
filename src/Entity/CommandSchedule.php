@@ -44,6 +44,9 @@ class CommandSchedule
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
 
+    #[ORM\Column(length: 255)]
+    private string $title = '';
+
     /**
      * @var iterable<CommandLog>
      */
@@ -193,5 +196,18 @@ class CommandSchedule
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
     }
 }
