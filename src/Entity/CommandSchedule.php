@@ -198,6 +198,9 @@ class CommandSchedule
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
