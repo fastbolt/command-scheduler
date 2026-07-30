@@ -127,7 +127,8 @@ final class CommandLogRepository extends ServiceEntityRepository
                    ->setParameter('command', $command, ParameterType::STRING);
 
         if ($argument !== '') {
-            $qb->andWhere('cl.arguments = :argument')
+            $qb->leftJoin('cl.commandSchedule', 'c')
+               -> andWhere('c.arguments = :argument')
                ->setParameter('argument', $argument, ParameterType::STRING);
         }
 
