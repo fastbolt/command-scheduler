@@ -113,6 +113,7 @@ final class CommandLogRepository extends ServiceEntityRepository
 
     /**
      * @param string $command
+     * @param string $argument
      *
      * @return CommandLog|null
      */
