@@ -38,16 +38,31 @@ final class ConsoleTerminateEventSubscriber implements EventSubscriberInterface
      */
     public function onConsoleTerminate(ConsoleTerminateEvent $event): void
     {
+        $command = $event->getCommand();
+
         // fail silently
-        if (null === ($command = $event->getCommand())) {
+        if (null === $command) {
             return;
         }
 
+        $commandHash = spl_object_hash($command);
+
         // fail silently
-        if (null === ($log = $this->commandLogRegistry->getItem(spl_object_hash($command)))) {
+        if (null === ($log = $this->commandLogRegistry->getItem($commandHash))) {
             return;
         }
 
-        $this->commandLogPersister->finishLog($log, $event->getExitCode());
+        if ($this->commandLogRegistry->isExternallyManaged($commandHash)) {
+            return;
+        }
+
+        try {
+            $this->commandLogPersister->finishLog(
+                $log,
+                $event->getExitCode(),
+            );
+        } finally {
+            $this->commandLogRegistry->unregisterItem($commandHash);
+        }
     }
 }
