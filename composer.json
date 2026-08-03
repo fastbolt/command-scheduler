@@ -19,7 +19,7 @@
         }
     ],
     "require" : {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "doctrine/doctrine-bundle": "^2.6",
         "doctrine/orm": "^2.12|^3.2",
         "doctrine/persistence": "^2.4|^3.0",

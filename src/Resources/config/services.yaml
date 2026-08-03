@@ -33,6 +33,7 @@ services:
     Fastbolt\CommandScheduler\Execution\CommandScheduleExecutor:
         $lockRegistry: '@Fastbolt\CommandScheduler\Lock\LockRegistry'
         $persister: '@Fastbolt\CommandScheduler\Persistence\CommandLogPersister'
+        $commandLogRegistry: '@Fastbolt\CommandScheduler\Persistence\CommandLogRegistry'
 
     Fastbolt\CommandScheduler\Lock\LockRegistry:
         $lockFactory: '@Symfony\Component\Lock\LockFactory'

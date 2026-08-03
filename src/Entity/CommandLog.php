@@ -29,6 +29,9 @@ class CommandLog
     #[ORM\Column(length: 255)]
     private string $command;
 
+    #[ORM\Column(length: 255)]
+    private string $arguments = '';
+
     #[ORM\ManyToOne(targetEntity: CommandSchedule::class, inversedBy: 'logs')]
     private ?CommandSchedule $commandSchedule;
 
@@ -60,12 +63,13 @@ class CommandLog
      * @param string               $command
      * @param CommandSchedule|null $commandSchedule
      */
-    public function __construct(string $command, ?CommandSchedule $commandSchedule = null)
+    public function __construct(string $command, ?CommandSchedule $commandSchedule = null, string $arguments = '')
     {
         $this->command         = $command;
         $this->commandSchedule = $commandSchedule;
         $this->createdAt       = new DateTimeImmutable();
         $this->changedAt       = new DateTimeImmutable();
+        $this->arguments       = $arguments;
     }
 
     /**
@@ -210,6 +214,22 @@ class CommandLog
     public function setChangedAt(?DateTimeImmutable $changedAt): void
     {
         $this->changedAt = $changedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArguments(): string
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * @param string $arguments
+     */
+    public function setArguments(string $arguments): void
+    {
+        $this->arguments = $arguments;
     }
 
     /**
