@@ -113,17 +113,32 @@ final class CommandLogPersister
         $this->entityManager->flush();
     }
 
-    /**
-     * @param CommandLog $log
-     *
-     * @return void
-     */
-    public function startLog(CommandLog $log): void
+    public function startLog(CommandLog $log): bool
     {
-        $log->setStartedAt(new DateTimeImmutable());
+        $startedAt = new DateTimeImmutable();
 
-        $this->entityManager->persist($log);
-        $this->entityManager->flush();
+        $updatedRows = $this->entityManager
+            ->createQueryBuilder()
+            ->update(CommandLog::class, 'cl')
+            ->set('cl.startedAt', ':startedAt')
+            ->set('cl.changedAt', ':changedAt')
+            ->where('cl.id = :id')
+            ->andWhere('cl.startedAt IS NULL')
+            ->andWhere('cl.finishedAt IS NULL')
+            ->setParameter('startedAt', $startedAt)
+            ->setParameter('changedAt', $startedAt)
+            ->setParameter('id', $log->getId())
+            ->getQuery()
+            ->execute();
+
+        if ($updatedRows !== 1) {
+            return false;
+        }
+
+        $log->setStartedAt($startedAt);
+        $log->setChangedAt($startedAt);
+
+        return true;
     }
 
     /**

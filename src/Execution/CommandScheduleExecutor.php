@@ -37,6 +37,21 @@ final class CommandScheduleExecutor
             throw new RuntimeException('Application object not set. Please set it before executing commands.');
         }
 
+        //Claim log!
+        if (!$this->persister->startLog($commandLog)) {
+            if ($output->isVerbose()) {
+                $output->writeln(
+                    sprintf(
+                        '<comment>Skipping already claimed command log #%d (%s).</comment>',
+                        $commandLog->getId(),
+                        $commandLog->getCommand()
+                    )
+                );
+            }
+
+            return null;
+        }
+
         $exception   = null;
         $lock        = null;
         $command     = $commandLog->getCommandSchedule();
@@ -44,9 +59,6 @@ final class CommandScheduleExecutor
         $result      = null;
 
         try {
-            // set started
-            $this->persister->startLog($commandLog);
-
             $lock      = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
             $arguments = $command ? $command->getArguments() : '';
 
@@ -71,14 +83,9 @@ final class CommandScheduleExecutor
             $this->persister->finishLog($commandLog, $result);
 
             // release lock present
-            if (null !== $lock && null !== $commandName) {
+            if (null !== $lock) {
                 $this->lockRegistry->releaseLock($commandName);
             }
-        }
-
-        // throw previously caught exception
-        if ($exception) {
-//            throw $exception;
         }
 
         return $result;
