@@ -113,20 +113,28 @@ final class CommandLogRepository extends ServiceEntityRepository
 
     /**
      * @param string $command
+     * @param string $argument
      *
      * @return CommandLog|null
      */
-    public function getLastExecution(string $command): ?CommandLog
+    public function getLastExecution(string $command, string $argument = ''): ?CommandLog
     {
-        return $this->createQueryBuilder('cl')
-                    ->where('cl.command = :command')
-                    ->andWhere('cl.startedAt IS NOT NULL')
-                    ->andWhere('cl.finishedAt IS NOT NULL')
-                    ->orderBy('cl.startedAt', 'DESC')
-                    ->setParameter('command', $command, ParameterType::STRING)
-                    ->setMaxResults(1)
-                    ->getQuery()
-                    ->getOneOrNullResult();
+        $qb = $this->createQueryBuilder('cl')
+                   ->where('cl.command = :command')
+                   ->andWhere('cl.startedAt IS NOT NULL')
+                   ->andWhere('cl.finishedAt IS NOT NULL')
+                   ->orderBy('cl.startedAt', 'DESC')
+                   ->setParameter('command', $command, ParameterType::STRING);
+
+        if ($argument !== '') {
+            $qb->leftJoin('cl.commandSchedule', 'c')
+               -> andWhere('c.arguments = :argument')
+               ->setParameter('argument', $argument, ParameterType::STRING);
+        }
+
+        return $qb->setMaxResults(1)
+                  ->getQuery()
+                  ->getOneOrNullResult();
     }
 
     /**

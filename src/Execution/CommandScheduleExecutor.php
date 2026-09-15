@@ -63,7 +63,7 @@ final class CommandScheduleExecutor
                 sprintf(
                     'Exception "%s" while executing command "%s": %s',
                     get_class($exception),
-                    $commandLog->getCommand(),
+                    $commandName,
                     $exception->getMessage()
                 )
             );
