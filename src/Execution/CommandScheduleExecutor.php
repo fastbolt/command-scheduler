@@ -2,8 +2,7 @@
 
 namespace Fastbolt\CommandScheduler\Execution;
 
-use Fastbolt\CommandScheduler\Persistence\CommandLogRegistry;
-use Throwable;
+use Exception;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Lock\LockRegistry;
 use Fastbolt\CommandScheduler\Persistence\CommandLogPersister;
@@ -22,8 +21,7 @@ final class CommandScheduleExecutor
      */
     public function __construct(
         private readonly LockRegistry $lockRegistry,
-        private readonly CommandLogPersister $persister,
-        private readonly CommandLogRegistry $commandLogRegistry,
+        private readonly CommandLogPersister $persister
     ) {
     }
 
@@ -31,35 +29,25 @@ final class CommandScheduleExecutor
      * @param CommandLog   $commandLog
      * @param SymfonyStyle $output
      *
-     * @return int
+     * @return int|null
      */
-    public function execute(CommandLog $commandLog, SymfonyStyle $output): int
+    public function execute(CommandLog $commandLog, SymfonyStyle $output): ?int
     {
         if (null === ($application = $this->application)) {
             throw new RuntimeException('Application object not set. Please set it before executing commands.');
         }
 
+        //Claim log!
+        if (!$this->persister->startLog($commandLog)) {
+            return null;
+        }
+
         $lock        = null;
-        $commandHash = null;
+        $command     = $commandLog->getCommandSchedule();
         $commandName = $commandLog->getCommand();
-        $result      = CommandLog::COMMAND_RETURN_EXCEPTION;
-        $exception   = null;
+        $result      = null;
 
         try {
-            // set started
-            $this->persister->startLog($commandLog);
-
-            $consoleCommand = $application->find($commandName);
-            $commandHash    = spl_object_hash($consoleCommand);
-
-            $this->commandLogRegistry->registerItem(
-                $commandHash,
-                $commandLog,
-                true,
-            );
-
-            $command = $commandLog->getCommandSchedule();
-
             $lock      = $this->lockRegistry->getLock($commandName = $commandLog->getCommand());
             $arguments = $command ? $command->getArguments() : '';
 
@@ -68,7 +56,9 @@ final class CommandScheduleExecutor
 
             // run executable
             $result = $application->run($commandInput, $output);
-        } catch (Throwable $exception) {
+        } catch (Exception $exception) {
+            $result = CommandLog::COMMAND_RETURN_EXCEPTION;
+
             $output->error(
                 sprintf(
                     'Exception "%s" while executing command "%s": %s',
@@ -78,46 +68,13 @@ final class CommandScheduleExecutor
                 )
             );
         } finally {
-            try {
-                // Update log entry if exists
-                $this->persister->finishLog($commandLog, $result);
-            } catch (Throwable $throwable) {
-                $output->error(
-                    sprintf(
-                        'Could not finish log %d for command "%s": %s',
-                        $commandLog->getId(),
-                        $commandName,
-                        $throwable->getMessage(),
-                    )
-                );
-            } finally {
-                if (null !== $commandHash) {
-                    $this->commandLogRegistry->unregisterItem(
-                        $commandHash,
-                    );
-                }
-                // release lock present
-                if (null !== $lock) {
-                    try {
-                        $this->lockRegistry->releaseLock(
-                            $commandName,
-                        );
-                    } catch (Throwable $throwable) {
-                        $output->error(
-                            sprintf(
-                                'Could not release lock for command "%s": %s',
-                                $commandName,
-                                $throwable->getMessage(),
-                            )
-                        );
-                    }
-                }
-            }
-        }
+            // Update log entry if exists
+            $this->persister->finishLog($commandLog, $result);
 
-        // throw previously caught exception
-        if ($exception) {
-//            throw $exception;
+            // release lock present
+            if (null !== $lock) {
+                $this->lockRegistry->releaseLock($commandName);
+            }
         }
 
         return $result;
