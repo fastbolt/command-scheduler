@@ -50,8 +50,11 @@ final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var Application $application */
-        if ($command instanceof StatusCommandInterface && null !== ($application = $command->getApplication())) {
+        /** @var Application|null $application */
+        $application = $command->getApplication();
+
+        if ($command instanceof StatusCommandInterface && null !== $application) {
+            $application->setAutoExit(false);
             $interval = $command->getAlarmInterval();
             if (($output = $event->getOutput())->isVerbose()) {
                 $output->writeln(
@@ -62,8 +65,14 @@ final class ConsoleCommandEventSubscriber implements EventSubscriberInterface
             $application->setAlarmInterval($interval);
         }
 
+        $commandHash = spl_object_hash($command);
+
+        if ($this->commandLogRegistry->hasItem($commandHash)) {
+            return;
+        }
+
         if (null !== ($log = $this->commandLogPersister->createLog($commandName))) {
-            $this->commandLogRegistry->registerItem(spl_object_hash($command), $log);
+            $this->commandLogRegistry->registerItem($commandHash, $log);
         }
     }
 }
