@@ -39,23 +39,12 @@ final class CommandScheduleExecutor
 
         //Claim log!
         if (!$this->persister->startLog($commandLog)) {
-            if ($output->isVerbose()) {
-                $output->writeln(
-                    sprintf(
-                        '<comment>Skipping already claimed command log #%d (%s).</comment>',
-                        $commandLog->getId(),
-                        $commandLog->getCommand()
-                    )
-                );
-            }
-
             return null;
         }
 
-        $exception   = null;
         $lock        = null;
         $command     = $commandLog->getCommandSchedule();
-        $commandName = null;
+        $commandName = $commandLog->getCommand();
         $result      = null;
 
         try {

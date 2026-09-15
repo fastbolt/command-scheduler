@@ -9,6 +9,7 @@
 namespace Fastbolt\CommandScheduler\Persistence;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Fastbolt\CommandScheduler\Entity\CommandLog;
 use Fastbolt\CommandScheduler\Entity\CommandSchedule;
@@ -113,11 +114,16 @@ final class CommandLogPersister
         $this->entityManager->flush();
     }
 
+    /**
+     * @param CommandLog $log
+     *
+     * @return bool
+     */
     public function startLog(CommandLog $log): bool
     {
         $startedAt = new DateTimeImmutable();
 
-        $updatedRows = $this->entityManager
+        $updatedRows = (int)$this->entityManager
             ->createQueryBuilder()
             ->update(CommandLog::class, 'cl')
             ->set('cl.startedAt', ':startedAt')
@@ -125,13 +131,13 @@ final class CommandLogPersister
             ->where('cl.id = :id')
             ->andWhere('cl.startedAt IS NULL')
             ->andWhere('cl.finishedAt IS NULL')
-            ->setParameter('startedAt', $startedAt)
-            ->setParameter('changedAt', $startedAt)
-            ->setParameter('id', $log->getId())
+            ->setParameter('startedAt', $startedAt, Types::DATETIME_IMMUTABLE)
+            ->setParameter('changedAt', $startedAt, Types::DATETIME_IMMUTABLE)
+            ->setParameter('id', $log->getId(), Types::INTEGER)
             ->getQuery()
             ->execute();
 
-        if ($updatedRows !== 1) {
+        if (1 !== $updatedRows) {
             return false;
         }
 
