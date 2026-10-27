@@ -4,12 +4,16 @@ on:
     pull_request:
         paths:
             - "**.php"
+            - "composer.json"
+            - "composer.lock"
             - "psalm.xml"
             - ".psalm/baseline.xml"
             - ".github/workflows/psalm.yaml"
     push:
         paths:
             - "**.php"
+            - "composer.json"
+            - "composer.lock"
             - "psalm.xml"
             - ".psalm/baseline.xml"
             - ".github/workflows/psalm.yaml"
@@ -19,15 +23,21 @@ jobs:
         name: Psalm
         runs-on: ubuntu-latest
         steps:
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.3'
-            -   uses: actions/checkout@master
+            - name: Checkout
+              uses: actions/checkout@v4
 
-            -   name: Psalm
-                uses: psalm/psalm-github-actions@2.3.0
-                with:
-                    args: --shepherd
-                    composer_require_dev: true
-                    composer_ignore_platform_reqs: true
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  tools: composer:v2
+                  coverage: none
+
+            - name: Install dependencies
+              run: composer install --prefer-dist --no-interaction --no-progress
+
+            - name: Check Psalm version
+              run: vendor/bin/psalm --version
+
+            - name: Run Psalm
+              run: vendor/bin/psalm --no-progress --output-format=github
