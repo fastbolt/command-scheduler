@@ -12,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class StatusCommand extends Command implements StatusCommandInterface
 {
-    private const DEFAULT_ALARM_INTERVAL = 10;
+    private const DEFAULT_ALARM_INTERVAL = 0;
 
     private string $statusText = '';
 
